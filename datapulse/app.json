@@ -17,6 +17,8 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
+      "package": "com.williamferreira.datapulse",
+      "versionCode": 1,
       "predictiveBackGestureEnabled": false
     },
     "web": {

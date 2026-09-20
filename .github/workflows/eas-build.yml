@@ -44,7 +44,7 @@ jobs:
   # ============================================================
   # WEB / ORACLE CLOUD
   # ============================================================
-    web-deploy:
+  web-deploy:
     name: Deploy Web to Oracle Cloud
     runs-on: ubuntu-latest
 

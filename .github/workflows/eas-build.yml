@@ -63,7 +63,7 @@ jobs:
             echo "========================================"
 
             APP_DIR="$HOME/DataPulseExpo"
-            REPO_URL="https://github.com/SEU_USUARIO/DataPulseExpo.git"
+            REPO_URL="https://github.com/illiamw/DataPulseExpo.git"
 
             echo "Verificando projeto..."
 

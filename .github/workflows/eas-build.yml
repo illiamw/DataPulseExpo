@@ -1,4 +1,4 @@
-name: DataPulse Android
+name: DataPulse CI/CD
 
 on:
   push:
@@ -6,7 +6,11 @@ on:
       - main
 
 jobs:
-  build:
+
+  # ============================================================
+  # ANDROID
+  # ============================================================
+  android:
     name: Build and Submit Android
     runs-on: ubuntu-latest
 
@@ -35,3 +39,59 @@ jobs:
         run: eas build --platform android --profile production --auto-submit --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+
+  # ============================================================
+  # WEB / ORACLE CLOUD
+  # ============================================================
+  web-deploy:
+    name: Deploy Web to Oracle Cloud
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+
+            echo "========================================"
+            echo "DataPulse Web Deployment"
+            echo "========================================"
+
+            echo "Servidor:"
+            hostname
+
+            echo "Usuário:"
+            whoami
+
+            echo "Atualizando projeto..."
+
+            cd ~/DataPulseExpo
+
+            git pull origin main
+
+            echo "Entrando no projeto..."
+
+            cd datapulse
+
+            echo "Construindo imagem Web..."
+
+            docker compose -f docker-compose.web.yml build --no-cache
+
+            echo "Subindo container..."
+
+            docker compose -f docker-compose.web.yml up -d
+
+            echo "Limpando imagens antigas..."
+
+            docker image prune -f
+
+            echo "========================================"
+            echo "Deploy concluído"
+            echo "========================================"
+
+            docker compose -f docker-compose.web.yml ps

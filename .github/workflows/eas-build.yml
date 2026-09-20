@@ -68,7 +68,7 @@ jobs:
             echo "Verificando projeto..."
 
             if [ -d "$APP_DIR/.git" ]; then
-              echo "Projeto encontrado."
+              echo "Projeto encontrado ."
               echo "Atualizando repositório..."
 
               cd "$APP_DIR"

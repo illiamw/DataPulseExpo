@@ -44,7 +44,7 @@ jobs:
   # ============================================================
   # WEB / ORACLE CLOUD
   # ============================================================
-  web-deploy:
+    web-deploy:
     name: Deploy Web to Oracle Cloud
     runs-on: ubuntu-latest
 
@@ -62,27 +62,43 @@ jobs:
             echo "DataPulse Web Deployment"
             echo "========================================"
 
-            echo "Servidor:"
-            hostname
+            APP_DIR="$HOME/DataPulseExpo"
+            REPO_URL="https://github.com/SEU_USUARIO/DataPulseExpo.git"
 
-            echo "Usuário:"
-            whoami
+            echo "Verificando projeto..."
 
-            echo "Atualizando projeto..."
+            if [ -d "$APP_DIR/.git" ]; then
+              echo "Projeto encontrado."
+              echo "Atualizando repositório..."
 
-            cd ~/DataPulseExpo
+              cd "$APP_DIR"
 
-            git pull origin main
+              git fetch origin
+              git reset --hard origin/main
 
-            echo "Entrando no projeto..."
+            else
+              echo "Projeto não encontrado."
+              echo "Realizando clone..."
 
-            cd datapulse
+              rm -rf "$APP_DIR"
 
-            echo "Construindo imagem Web..."
+              git clone "$REPO_URL" "$APP_DIR"
+
+              cd "$APP_DIR"
+            fi
+
+            echo "Projeto atualizado:"
+            git log -1 --oneline
+
+            echo "Entrando no projeto Expo..."
+
+            cd "$APP_DIR/datapulse"
+
+            echo "Construindo aplicação Web..."
 
             docker compose -f docker-compose.web.yml build --no-cache
 
-            echo "Subindo container..."
+            echo "Iniciando container..."
 
             docker compose -f docker-compose.web.yml up -d
 

@@ -106,8 +106,8 @@ jobs:
 
             docker image prune -f
 
-            echo "========================================"
+            echo "========================================="
             echo "Deploy concluído"
-            echo "========================================"
+            echo "========================================="
 
             docker compose -f docker-compose.web.yml ps

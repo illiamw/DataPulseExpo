@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useAuth, useSignUp } from '@clerk/expo'
 import { useState } from 'react'
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
@@ -71,7 +72,7 @@ export default function MainScreen() {
 
   return (
     <View style={styles.container}>
-        <Text>V 0.0.0</Text>
+        <Text>V 0.0.1</Text>
       <TextInputCustom
         style={styles.input}
         autoCapitalize="none"

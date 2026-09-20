@@ -71,6 +71,7 @@ export default function MainScreen() {
 
   return (
     <View style={styles.container}>
+        <Text>V 0.0.0</Text>
       <TextInputCustom
         style={styles.input}
         autoCapitalize="none"

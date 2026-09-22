@@ -41,13 +41,17 @@
       ],
       "@clerk/expo",
       "expo-secure-store",
-      "expo-web-browser"
+      "expo-web-browser",
+      "@clerk/expo-google-signin"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
     },
     "extra": {
+      "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_ZGl2ZXJzZS1ibHVlZ2lsbC0yNzExLmNsZXJrLmFjY291bnRzLmRldiQ",
+      "EXPO_PUBLIC_CLERK_GOOGLE_WEB_CLIENT_ID": "776727460327-ek4jhmqqthufr7g30k8sc5ogihs7gs8g.apps.googleusercontent.com",
+      "EXPO_PUBLIC_CLERK_GOOGLE_ANDROID_CLIENT_ID": "776727460327-p4k3jfi8002ib5djhmuib29dhhk8l4pv.apps.googleusercontent.com",
       "router": {},
       "eas": {
         "projectId": "2c916419-7555-4876-a843-4d26a809ac79"

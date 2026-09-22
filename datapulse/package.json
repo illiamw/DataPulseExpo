@@ -4,8 +4,10 @@
   "version": "1.0.0",
   "dependencies": {
     "@clerk/expo": "^4.6.8",
+    "@clerk/expo-google-signin": "^1.0.4",
     "@expo/metro-runtime": "~57.0.16",
     "@expo/ui": "~57.0.19",
+    "@expo/vector-icons": "^15.0.2",
     "expo": "~57.0.24",
     "expo-auth-session": "~57.0.12",
     "expo-constants": "~57.0.19",

@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   },
 
   label: {
-    color: '#E2E8F0',
+    color: '#070707',
     fontSize: 14,
     fontWeight: '600',
     marginBottom: 8,

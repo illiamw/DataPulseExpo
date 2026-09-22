@@ -1,42 +1,30 @@
-import { ClerkProvider } from '@clerk/expo';
-import { tokenCache } from '@clerk/expo/token-cache';
-import { Slot } from 'expo-router';
-import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Slot } from 'expo-router';
+import { useState } from 'react';
+import NavCustom from '@/app/industrial/navCustom';
 
-import Config from '@/app/config';
-
-const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
-
-if (!publishableKey) {
-  throw new Error('Add your Clerk Publishable Key to the .env file');
-}
-
-export default function RootLayout() {
-  const [configExpanded, setConfigExpanded] = useState(false);
-
+export default function Industrial() {
+  const [navExpand, setnavExpand] = useState(false);
   return (
-    <ClerkProvider
-      publishableKey={publishableKey}
-      tokenCache={tokenCache}
-    >
-      <View style={styles.container}>
+    <View style={styles.container}>
 
         <Pressable
           style={styles.floatingButton}
-          onPress={() => setConfigExpanded(prev => !prev)}
+          onPress={() => setnavExpand(prev => !prev)}
         >
           <Ionicons
-            name={configExpanded ? 'close' : 'settings-outline'}
+            name={navExpand ? 'close' : 'menu'}
             size={28}
             color="#fff"
           />
         </Pressable>
 
-        {configExpanded && (
+        {navExpand && (
           <View style={styles.configContainer}>
-            <Config />
+            <NavCustom 
+            navExpand={navExpand}
+            setNavExpand={setnavExpand}/>
           </View>
         )}
 
@@ -45,9 +33,9 @@ export default function RootLayout() {
         </View>
 
       </View>
-    </ClerkProvider>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -58,7 +46,7 @@ const styles = StyleSheet.create({
   position: 'absolute',
 
   top: 50,
-  right: 20,
+  left: 20,
 
   width: 56,
   height: 56,

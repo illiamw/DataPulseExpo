@@ -467,7 +467,7 @@ const handleSignIn = async () => {
       {/* VERSION */}
 
       <Text style={styles.text}>
-        V 0.1.1
+        V 0.1.2
       </Text>
 
     </View>

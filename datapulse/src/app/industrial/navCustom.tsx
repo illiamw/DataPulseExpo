@@ -34,6 +34,7 @@ export default function NavCustom({
 
   return (
     <View style={styles.container}>
+      <View style={styles.content}>
       <Text style={styles.title}>Navegação</Text>
 
       <Pressable
@@ -73,6 +74,7 @@ export default function NavCustom({
         </Text>
       </Pressable>
     </View>
+    </View>
   );
 }
 
@@ -80,8 +82,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
+    alignItems: 'center'
+  },
+
+  content: {
+    width: '100%',
+    maxWidth: 1000,
+    alignSelf: 'center',
+    padding: 24,
+    paddingBottom: 60,
+    paddingTop: 120
   },
 
   title: {

@@ -436,6 +436,7 @@ const handleSignIn = async () => {
         <View style={styles.col}>
 
           <ButtonSocialCustom
+          disabled={true}
             onPress={() => {
               Alert.alert(
                 'Em breve',
@@ -452,7 +453,13 @@ const handleSignIn = async () => {
         <View style={styles.col}>
 
           <ButtonSocialCustom
-            onPress={handleTest}
+            disabled={true}
+            onPress={() => {
+              Alert.alert(
+                'Em breve',
+                'Login com Apple ainda não foi configurado.'
+              );
+            }}
             image={require('@/assets/images/apple-icon.png')}
           />
 
@@ -467,7 +474,7 @@ const handleSignIn = async () => {
       {/* VERSION */}
 
       <Text style={styles.text}>
-        V 0.1.2
+        V 1.0.0
       </Text>
 
     </View>

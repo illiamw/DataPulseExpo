@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+import React from 'react';
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  useWindowDimensions,
+} from 'react-native';
 import { useRouter } from 'expo-router';
 
 type NavCustomProps = {
@@ -6,114 +13,358 @@ type NavCustomProps = {
   setNavExpand: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+type NavigationItemProps = {
+  icon: string;
+  title: string;
+  description: string;
+  onPress: () => void;
+};
+
+function NavigationItem({
+  icon,
+  title,
+  description,
+  onPress,
+}: NavigationItemProps) {
+  return (
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.navigationItem,
+        pressed && styles.navigationItemPressed,
+      ]}
+    >
+      <View style={styles.iconContainer}>
+        <Text style={styles.icon}>
+          {icon}
+        </Text>
+      </View>
+
+      <View style={styles.itemContent}>
+        <Text style={styles.itemTitle}>
+          {title}
+        </Text>
+
+        <Text style={styles.itemDescription}>
+          {description}
+        </Text>
+      </View>
+
+      <Text style={styles.arrow}>
+        →
+      </Text>
+    </Pressable>
+  );
+}
+
 export default function NavCustom({
   navExpand,
   setNavExpand,
 }: NavCustomProps) {
   const router = useRouter();
+  const { width } = useWindowDimensions();
+
+  const isDesktop = width >= 768;
+
+  const closeNavigation = () => {
+    setNavExpand(false);
+  };
 
   const handleAbout = () => {
-    setNavExpand(prev => !prev);
+    closeNavigation();
     router.push('/industrial');
   };
 
   const handlePredicao = () => {
-    setNavExpand(prev => !prev);
+    closeNavigation();
     router.push('/industrial/predicao');
   };
 
   const handleListaModels = () => {
-    setNavExpand(prev => !prev);
+    closeNavigation();
     router.push('/industrial/listarmodelos');
   };
 
   const handleTreinarModels = () => {
-    setNavExpand(prev => !prev);
+    closeNavigation();
     router.push('/industrial/treinomodelo');
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.content}>
-      <Text style={styles.title}>Navegação</Text>
-
-      <Pressable
-        style={styles.button}
-        onPress={handleAbout}
+      <View
+        style={[
+          styles.content,
+          isDesktop && styles.contentDesktop,
+        ]}
       >
-        <Text style={styles.buttonText}>
-          Sobre os dados e os modelos
-        </Text>
-      </Pressable>
+        {/* HEADER */}
+        <View style={styles.header}>
+          <View>
+            <Text style={styles.eyebrow}>
+              DATAPULSE
+            </Text>
 
-      <Pressable
-        style={styles.button}
-        onPress={handleListaModels}
-      >
-        <Text style={styles.buttonText}>
-          Lista de Modelos
-        </Text>
-      </Pressable>
+            <Text style={styles.title}>
+              Navegação
+            </Text>
 
+            <Text style={styles.subtitle}>
+              Explore os recursos da aplicação industrial.
+            </Text>
+          </View>
 
-      <Pressable
-        style={styles.button}
-        onPress={handlePredicao}
-      >
-        <Text style={styles.buttonText}>
-          Predição
-        </Text>
-      </Pressable>
+          
+        </View>
 
-      <Pressable
-        style={styles.button}
-        onPress={handleTreinarModels}
-      >
-        <Text style={styles.buttonText}>
-          Treino de modelos
-        </Text>
-      </Pressable>
-    </View>
+        {/* NAVEGAÇÃO */}
+        <View style={styles.navigationCard}>
+          <NavigationItem
+            icon="⚙"
+            title="Sobre os dados e modelos"
+            description="Conheça os dados, modelos e arquitetura do DataPulse."
+            onPress={handleAbout}
+          />
+
+          <NavigationItem
+            icon="▦"
+            title="Lista de modelos"
+            description="Visualize os modelos disponíveis para utilização."
+            onPress={handleListaModels}
+          />
+
+          <NavigationItem
+            icon="⌁"
+            title="Predição"
+            description="Execute uma previsão utilizando um modelo treinado."
+            onPress={handlePredicao}
+          />
+
+          <NavigationItem
+            icon="◈"
+            title="Treino de modelos"
+            description="Execute experimentos e treine novos modelos."
+            onPress={handleTreinarModels}
+          />
+        </View>
+
+        {/* STATUS */}
+        <View style={styles.statusCard}>
+          <View style={styles.statusIndicator} />
+
+          <View style={styles.statusContent}>
+            <Text style={styles.statusTitle}>
+              Ambiente industrial
+            </Text>
+
+            <Text style={styles.statusDescription}>
+              Dados, modelos e predições disponíveis.
+            </Text>
+          </View>
+        </View>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  /* =========================
+     CONTAINER
+  ========================= */
+
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    backgroundColor: '#F8FAFC',
   },
 
   content: {
     width: '100%',
-    maxWidth: 1000,
+    maxWidth: 700,
     alignSelf: 'center',
-    padding: 24,
-    paddingBottom: 60,
+    paddingHorizontal: 20,
+    paddingBottom: 40,
     paddingTop: 120
   },
 
-  title: {
-    fontSize: 32,
-    fontWeight: '700',
-    marginBottom: 30,
+  contentDesktop: {
+    maxWidth: 850,
   },
 
-  button: {
-    backgroundColor: '#222',
-    height: 52,
-    width: '100%',
-    borderWidth: 1,
-    borderRadius: 10,
+  /* =========================
+     HEADER
+  ========================= */
+
+  header: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    marginBottom: 24,
+  },
+
+  eyebrow: {
+    fontSize: 12,
+    fontWeight: '800',
+    letterSpacing: 1.5,
+    color: '#0284C7',
+    marginBottom: 6,
+  },
+
+  title: {
+    fontSize: 30,
+    fontWeight: '800',
+    color: '#0F172A',
+    marginBottom: 6,
+  },
+
+  subtitle: {
+    fontSize: 15,
+    lineHeight: 22,
+    color: '#64748B',
+    maxWidth: 550,
+  },
+
+  /* =========================
+     FECHAR
+  ========================= */
+
+  closeButton: {
+    width: 42,
+    height: 42,
+    borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 16,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
   },
 
-  buttonText: {
-    color: '#fff',
+  closeButtonPressed: {
+    opacity: 0.65,
+    transform: [{ scale: 0.95 }],
+  },
+
+  closeButtonText: {
+    fontSize: 28,
+    lineHeight: 30,
+    color: '#64748B',
+    fontWeight: '400',
+  },
+
+  /* =========================
+     CARD DE NAVEGAÇÃO
+  ========================= */
+
+  navigationCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.04,
+    shadowRadius: 10,
+    elevation: 2,
+  },
+
+  /* =========================
+     ITEM
+  ========================= */
+
+  navigationItem: {
+    minHeight: 82,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    borderRadius: 15,
+  },
+
+  navigationItemPressed: {
+    backgroundColor: '#F0F9FF',
+    transform: [{ scale: 0.99 }],
+  },
+
+  iconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#E0F2FE',
+    marginRight: 14,
+  },
+
+  icon: {
+    fontSize: 22,
+    color: '#0284C7',
+  },
+
+  itemContent: {
+    flex: 1,
+    paddingRight: 10,
+  },
+
+  itemTitle: {
     fontSize: 16,
+    fontWeight: '800',
+    color: '#0F172A',
+    marginBottom: 4,
+  },
+
+  itemDescription: {
+    fontSize: 13,
+    lineHeight: 19,
+    color: '#64748B',
+  },
+
+  arrow: {
+    fontSize: 23,
+    color: '#0284C7',
     fontWeight: '600',
+  },
+
+  /* =========================
+     STATUS
+  ========================= */
+
+  statusCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 16,
+    paddingHorizontal: 18,
+    paddingVertical: 16,
+    borderRadius: 16,
+    backgroundColor: '#F0FDF4',
+    borderWidth: 1,
+    borderColor: '#BBF7D0',
+  },
+
+  statusIndicator: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#16A34A',
+    marginRight: 12,
+  },
+
+  statusContent: {
+    flex: 1,
+  },
+
+  statusTitle: {
+    fontSize: 14,
+    fontWeight: '800',
+    color: '#166534',
+    marginBottom: 2,
+  },
+
+  statusDescription: {
+    fontSize: 12,
+    color: '#15803D',
   },
 });

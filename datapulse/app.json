@@ -2,7 +2,7 @@
   "expo": {
     "name": "datapulse",
     "slug": "datapulse",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "datapulse",
@@ -42,7 +42,8 @@
       "@clerk/expo",
       "expo-secure-store",
       "expo-web-browser",
-      "@clerk/expo-google-signin"
+      "@clerk/expo-google-signin",
+      "@react-native-community/datetimepicker"
     ],
     "experiments": {
       "typedRoutes": true,

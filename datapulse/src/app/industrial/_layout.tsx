@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
 
-    backgroundColor: '#bcb5e7',
+    backgroundColor: '#F8FAFC',
 
     zIndex: 50,
 

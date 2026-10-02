@@ -8,12 +8,13 @@ import {
   Text,
   View,
   ActivityIndicator,
+  useWindowDimensions,
 } from 'react-native';
 
 import TextInputCustom from '@/components/ui/TextInputCustom';
 import ButtonCustom from '@/components/ui/ButtonCustom';
 
-const URL_FAST_API = 'http://163.176.161.159:8000/experiment'
+const URL_FAST_API = 'http://163.176.161.159:8000/experiment';
 
 type ModelName =
   | 'GaussianNB'
@@ -220,6 +221,10 @@ const MODELS: Record<ModelName, ModelConfig> = {
 const MODEL_NAMES = Object.keys(MODELS) as ModelName[];
 
 export default function TreinoModelo() {
+  const { width } = useWindowDimensions();
+
+  const isDesktop = width >= 768;
+
   const [selectedModel, setSelectedModel] =
     useState<ModelName>('XGBoost');
 
@@ -230,7 +235,6 @@ export default function TreinoModelo() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [responseText, setResponseText] = useState<any>(null);
-  
 
   function getDefaultParameters(model: ModelName) {
     const config = MODELS[model];
@@ -246,10 +250,9 @@ export default function TreinoModelo() {
 
   function handleSelectModel(model: ModelName) {
     setSelectedModel(model);
-
     setParameters(getDefaultParameters(model));
-
     setResult(null);
+    setResponseText(null);
   }
 
   function handleParameterChange(
@@ -306,12 +309,11 @@ export default function TreinoModelo() {
     };
   }
 
-  
-
   async function handleSubmit() {
     try {
       setLoading(true);
       setResult(null);
+      setResponseText(null);
 
       const payload = buildPayload();
 
@@ -320,19 +322,15 @@ export default function TreinoModelo() {
         JSON.stringify(payload, null, 2)
       );
 
-      const response = await fetch(
-        URL_FAST_API,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+      const response = await fetch(URL_FAST_API, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
 
       const responseTextoConsult = await response.text();
-      
 
       let responseData: any;
 
@@ -343,7 +341,8 @@ export default function TreinoModelo() {
       }
 
       if (!response.ok) {
-        setResponseText(responseTextoConsult)
+        setResponseText(responseTextoConsult);
+
         throw new Error(
           `Erro ${response.status}: ${responseTextoConsult}`
         );
@@ -356,8 +355,14 @@ export default function TreinoModelo() {
         'O experimento foi enviado com sucesso.'
       );
     } catch (error: any) {
-      setResponseText('Erro ao enviar experimento:' + error);
-      console.log('Erro ao enviar experimento:', error);
+      setResponseText(
+        'Erro ao enviar experimento: ' + error
+      );
+
+      console.log(
+        'Erro ao enviar experimento:',
+        error
+      );
 
       Alert.alert(
         'Erro',
@@ -374,41 +379,82 @@ export default function TreinoModelo() {
 
     if (modelConfig.parameters.length === 0) {
       return (
-        <View style={styles.noParameters}>
-          <Text style={styles.noParametersText}>
-            Este modelo não possui parâmetros personalizados.
-          </Text>
+        <View style={styles.emptyParameters}>
+          <View style={styles.emptyIcon}>
+            <Text style={styles.emptyIconText}>✓</Text>
+          </View>
+
+          <View style={styles.emptyContent}>
+            <Text style={styles.emptyTitle}>
+              Sem parâmetros personalizados
+            </Text>
+
+            <Text style={styles.emptyText}>
+              Este modelo utiliza apenas suas configurações
+              padrão para o treinamento.
+            </Text>
+          </View>
         </View>
       );
     }
 
     return (
-      <View style={styles.parametersContainer}>
-        <Text style={styles.sectionTitle}>
-          Parâmetros do modelo
-        </Text>
-
-        {modelConfig.parameters.map((parameter) => (
-          <View
-            key={parameter.name}
-            style={styles.parameterContainer}
-          >
-            <Text style={styles.label}>
-              {parameter.name}
+      <View style={styles.card}>
+        <View style={styles.cardHeader}>
+          <View>
+            <Text style={styles.cardTitle}>
+              Parâmetros
             </Text>
 
-            <TextInputCustom
-              value={parameters[parameter.name] ?? ''}
-              onChangeText={(value: string) =>
-                handleParameterChange(
-                  parameter.name,
-                  value
-                )
-              }
-              placeholder={parameter.defaultValue}
-            />
+            <Text style={styles.cardSubtitle}>
+              Configure os hiperparâmetros do modelo
+            </Text>
           </View>
-        ))}
+
+          <View style={styles.parameterCount}>
+            <Text style={styles.parameterCountText}>
+              {modelConfig.parameters.length}
+            </Text>
+          </View>
+        </View>
+
+        <View
+          style={[
+            styles.parametersGrid,
+            isDesktop && styles.parametersGridDesktop,
+          ]}
+        >
+          {modelConfig.parameters.map((parameter) => (
+            <View
+              key={parameter.name}
+              style={[
+                styles.parameterContainer,
+                isDesktop && styles.parameterDesktop,
+              ]}
+            >
+              <Text style={styles.label}>
+                {parameter.name}
+              </Text>
+
+              <TextInputCustom
+                value={
+                  parameters[parameter.name] ?? ''
+                }
+                onChangeText={(value: string) =>
+                  handleParameterChange(
+                    parameter.name,
+                    value
+                  )
+                }
+                placeholder={parameter.defaultValue}
+              />
+
+              <Text style={styles.defaultValue}>
+                Padrão: {parameter.defaultValue}
+              </Text>
+            </View>
+          ))}
+        </View>
       </View>
     );
   }
@@ -416,99 +462,224 @@ export default function TreinoModelo() {
   return (
     <ScrollView
       style={styles.container}
-      contentContainerStyle={styles.content}
+      contentContainerStyle={[
+        styles.content,
+        isDesktop && styles.contentDesktop,
+      ]}
       keyboardShouldPersistTaps="handled"
+      showsVerticalScrollIndicator={false}
     >
-      <Text style={styles.title}>
-        Treinar modelo
-      </Text>
+      {/* HEADER */}
 
-      <Text style={styles.description}>
-        Selecione o algoritmo e configure seus parâmetros
-        para executar um novo experimento.
-      </Text>
+      <View style={styles.header}>
+        <View style={styles.headerBadge}>
+          <View style={styles.headerDot} />
 
-      <Text style={styles.sectionTitle}>
-        Selecionar modelo
-      </Text>
+          <Text style={styles.headerBadgeText}>
+            MLOps
+          </Text>
+        </View>
 
-      <View style={styles.modelsContainer}>
-        {MODEL_NAMES.map((model) => {
-          const selected = selectedModel === model;
+        <Text style={styles.title}>
+          Treinar modelo
+        </Text>
 
-          return (
-            <Pressable
-              key={model}
-              onPress={() => handleSelectModel(model)}
-              style={[
-                styles.modelButton,
-                selected && styles.modelButtonSelected,
-              ]}
-            >
-              <Text
-                style={[
-                  styles.modelButtonText,
+        <Text style={styles.description}>
+          Configure um algoritmo de machine learning e
+          execute um novo experimento no DataPulse.
+        </Text>
+      </View>
+
+      {/* MODELO */}
+
+      <View style={styles.card}>
+        <View style={styles.cardHeader}>
+          <View>
+            <Text style={styles.cardTitle}>
+              Selecionar modelo
+            </Text>
+
+            <Text style={styles.cardSubtitle}>
+              Escolha o algoritmo para o experimento
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.modelsContainer}>
+          {MODEL_NAMES.map((model) => {
+            const selected =
+              selectedModel === model;
+
+            return (
+              <Pressable
+                key={model}
+                onPress={() =>
+                  handleSelectModel(model)
+                }
+                style={({ pressed }) => [
+                  styles.modelButton,
                   selected &&
-                    styles.modelButtonTextSelected,
+                    styles.modelButtonSelected,
+                  pressed &&
+                    styles.modelButtonPressed,
                 ]}
               >
-                {model}
-              </Text>
-            </Pressable>
-          );
-        })}
+                <View
+                  style={[
+                    styles.modelIndicator,
+                    selected &&
+                      styles.modelIndicatorSelected,
+                  ]}
+                />
+
+                <Text
+                  numberOfLines={1}
+                  style={[
+                    styles.modelButtonText,
+                    selected &&
+                      styles.modelButtonTextSelected,
+                  ]}
+                >
+                  {model}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </View>
       </View>
+
+      {/* MODELO ATUAL */}
 
       <View style={styles.selectedModelContainer}>
-        <Text style={styles.selectedModelLabel}>
-          Modelo selecionado
-        </Text>
+        <View style={styles.selectedModelIcon}>
+          <Text style={styles.selectedModelIconText}>
+            ML
+          </Text>
+        </View>
 
-        <Text style={styles.selectedModel}>
-          {selectedModel}
-        </Text>
+        <View style={styles.selectedModelInfo}>
+          <Text style={styles.selectedModelLabel}>
+            MODELO SELECIONADO
+          </Text>
+
+          <Text style={styles.selectedModel}>
+            {selectedModel}
+          </Text>
+
+          <Text style={styles.selectedModelApi}>
+            {MODELS[selectedModel].apiModel}
+          </Text>
+        </View>
+
+        <View style={styles.statusBadge}>
+          <View style={styles.statusDot} />
+
+          <Text style={styles.statusText}>
+            Configurável
+          </Text>
+        </View>
       </View>
+
+      {/* PARÂMETROS */}
 
       {renderParameters()}
 
-      <View style={styles.buttonContainer}>
-        <ButtonCustom
-          title={
-            loading
-              ? 'Executando experimento...'
-              : 'Executar experimento'
-          }
-          onPress={handleSubmit}
-          disabled={loading}
-        />
+      {/* AÇÃO */}
+
+      <View style={styles.actionCard}>
+        <View style={styles.actionInfo}>
+          <Text style={styles.actionTitle}>
+            Pronto para executar?
+          </Text>
+
+          <Text style={styles.actionDescription}>
+            O experimento será enviado para o pipeline
+            de treinamento.
+          </Text>
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <ButtonCustom
+            title={
+              loading
+                ? 'Executando experimento...'
+                : 'Executar experimento'
+            }
+            onPress={handleSubmit}
+            disabled={loading}
+          />
+        </View>
       </View>
+
+      {/* LOADING */}
 
       {loading && (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" />
+          <ActivityIndicator size="small" />
 
-          <Text style={styles.loadingText}>
-            Enviando experimento...
-          </Text>
+          <View>
+            <Text style={styles.loadingTitle}>
+              Executando experimento
+            </Text>
+
+            <Text style={styles.loadingText}>
+              Aguarde enquanto o modelo é treinado...
+            </Text>
+          </View>
         </View>
       )}
+
+      {/* RESULTADO */}
 
       {result !== null && (
         <View style={styles.resultContainer}>
-          <Text style={styles.sectionTitle}>
-            Resultado
-          </Text>
+          <View style={styles.resultHeader}>
+            <View>
+              <Text style={styles.resultTitle}>
+                Experimento concluído
+              </Text>
 
-          <Text style={styles.resultText}>
-            {JSON.stringify(result, null, 2)}
-          </Text>
+              <Text style={styles.resultSubtitle}>
+                Resposta retornada pela API
+              </Text>
+            </View>
+
+            <View style={styles.successBadge}>
+              <Text style={styles.successBadgeText}>
+                SUCESSO
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.resultCode}>
+            <Text style={styles.resultText}>
+              {JSON.stringify(result, null, 2)}
+            </Text>
+          </View>
         </View>
       )}
-      {responseText != null && (<View style={styles.error}>
-          <Text style={styles.errorText}>
-            {responseText}
-          </Text>
-        </View>)}
+
+      {/* ERRO */}
+
+      {responseText != null && (
+        <View style={styles.errorContainer}>
+          <View style={styles.errorIcon}>
+            <Text style={styles.errorIconText}>
+              !
+            </Text>
+          </View>
+
+          <View style={styles.errorContent}>
+            <Text style={styles.errorTitle}>
+              Erro no experimento
+            </Text>
+
+            <Text style={styles.errorText}>
+              {responseText}
+            </Text>
+          </View>
+        </View>
+      )}
     </ScrollView>
   );
 }
@@ -520,140 +691,488 @@ const styles = StyleSheet.create({
 
   content: {
     width: '100%',
-    maxWidth: 1000,
+    maxWidth: 1100,
     alignSelf: 'center',
-    padding: 24,
-    paddingBottom: 60,
-    paddingTop: 120
+    paddingHorizontal: 20,
+    paddingTop: 120,
+    paddingBottom: 70,
+  },
+
+  contentDesktop: {
+    paddingHorizontal: 32,
+    paddingTop: 110,
+  },
+
+  /* =========================
+     HEADER
+  ========================= */
+
+  header: {
+    marginBottom: 30,
+  },
+
+  headerBadge: {
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 7,
+    paddingHorizontal: 11,
+    paddingVertical: 6,
+    borderRadius: 20,
+    marginBottom: 14,
+    backgroundColor: '#E9EEF5',
+  },
+
+  headerDot: {
+    width: 7,
+    height: 7,
+    borderRadius: 4,
+    backgroundColor: '#2563EB',
+  },
+
+  headerBadgeText: {
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 1,
+    color: '#2563EB',
   },
 
   title: {
-    fontSize: 28,
-    fontWeight: '700',
+    fontSize: 32,
+    fontWeight: '800',
+    letterSpacing: -0.8,
     marginBottom: 8,
   },
 
   description: {
-    fontSize: 16,
-    lineHeight: 24,
-    marginBottom: 28,
-    opacity: 0.7,
+    maxWidth: 680,
+    fontSize: 15,
+    lineHeight: 23,
+    opacity: 0.62,
   },
 
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    marginBottom: 16,
+  /* =========================
+     CARD
+  ========================= */
+
+  card: {
+    borderWidth: 1,
+    borderColor: '#E3E7ED',
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 18,
+    backgroundColor: '#FFFFFF',
   },
+
+  cardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
+
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    letterSpacing: -0.2,
+  },
+
+  cardSubtitle: {
+    fontSize: 13,
+    marginTop: 4,
+    opacity: 0.55,
+  },
+
+  /* =========================
+     MODELOS
+  ========================= */
 
   modelsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 10,
-    marginBottom: 24,
+    gap: 9,
   },
 
   modelButton: {
+    minHeight: 44,
+    paddingHorizontal: 14,
     borderWidth: 1,
-    borderRadius: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    minWidth: 140,
+    borderColor: '#DDE2E8',
+    borderRadius: 10,
+    flexDirection: 'row',
     alignItems: 'center',
+    gap: 8,
+    backgroundColor: '#FAFBFC',
   },
 
   modelButtonSelected: {
-    backgroundColor: '#222',
+    borderColor: '#2563EB',
+    backgroundColor: '#EFF6FF',
+  },
+
+  modelButtonPressed: {
+    opacity: 0.75,
+    transform: [{ scale: 0.98 }],
+  },
+
+  modelIndicator: {
+    width: 7,
+    height: 7,
+    borderRadius: 4,
+    backgroundColor: '#C5CBD3',
+  },
+
+  modelIndicatorSelected: {
+    backgroundColor: '#2563EB',
   },
 
   modelButtonText: {
-    fontSize: 15,
-    fontWeight: '500',
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#4B5563',
   },
 
   modelButtonTextSelected: {
-    color: '#fff',
+    color: '#1D4ED8',
   },
 
+  /* =========================
+     MODELO SELECIONADO
+  ========================= */
+
   selectedModelContainer: {
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 24,
-    backgroundColor: '#eee',
+    minHeight: 90,
+    padding: 18,
+    borderRadius: 16,
+    marginBottom: 18,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#D9E5F7',
+    backgroundColor: '#F5F9FF',
+  },
+
+  selectedModelIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 14,
+    backgroundColor: '#2563EB',
+  },
+
+  selectedModelIconText: {
+    color: '#FFFFFF',
+    fontSize: 13,
+    fontWeight: '800',
+  },
+
+  selectedModelInfo: {
+    flex: 1,
   },
 
   selectedModelLabel: {
-    fontSize: 13,
-    opacity: 0.6,
-    marginBottom: 4,
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 1,
+    color: '#64748B',
+    marginBottom: 3,
   },
 
   selectedModel: {
-    fontSize: 18,
-    fontWeight: '700',
+    fontSize: 19,
+    fontWeight: '800',
+    color: '#172033',
   },
 
-  parametersContainer: {
-    marginBottom: 24,
+  selectedModelApi: {
+    fontSize: 11,
+    marginTop: 3,
+    color: '#64748B',
+  },
+
+  statusBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 20,
+    backgroundColor: '#E8F7EF',
+  },
+
+  statusDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#16A34A',
+  },
+
+  statusText: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#15803D',
+  },
+
+  /* =========================
+     PARÂMETROS
+  ========================= */
+
+  parametersGrid: {
+    gap: 16,
+  },
+
+  parametersGridDesktop: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
 
   parameterContainer: {
-    marginBottom: 16,
+    marginBottom: 2,
+  },
+
+  parameterDesktop: {
+    width: '31.8%',
   },
 
   label: {
-    fontSize: 15,
-    fontWeight: '600',
-    marginBottom: 6,
+    fontSize: 13,
+    fontWeight: '700',
+    marginBottom: 7,
+    color: '#374151',
   },
 
-  noParameters: {
+  defaultValue: {
+    fontSize: 10,
+    marginTop: 5,
+    color: '#8A94A3',
+  },
+
+  parameterCount: {
+    minWidth: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#EFF6FF',
+  },
+
+  parameterCountText: {
+    fontSize: 12,
+    fontWeight: '800',
+    color: '#2563EB',
+  },
+
+  /* =========================
+     SEM PARÂMETROS
+  ========================= */
+
+  emptyParameters: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 18,
+    borderRadius: 16,
+    marginBottom: 18,
+    borderWidth: 1,
+    borderColor: '#E3E7ED',
+    backgroundColor: '#FFFFFF',
+  },
+
+  emptyIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+    backgroundColor: '#E8F7EF',
+  },
+
+  emptyIconText: {
+    fontSize: 17,
+    fontWeight: '800',
+    color: '#16A34A',
+  },
+
+  emptyContent: {
+    flex: 1,
+  },
+
+  emptyTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    marginBottom: 3,
+  },
+
+  emptyText: {
+    fontSize: 12,
+    lineHeight: 18,
+    opacity: 0.55,
+  },
+
+  /* =========================
+     AÇÃO
+  ========================= */
+
+  actionCard: {
     padding: 20,
-    borderRadius: 8,
-    marginBottom: 24,
-    backgroundColor: '#eee',
+    borderRadius: 16,
+    marginBottom: 18,
+    borderWidth: 1,
+    borderColor: '#E3E7ED',
+    backgroundColor: '#FFFFFF',
   },
 
-  noParametersText: {
-    fontSize: 15,
-    opacity: 0.7,
-  },
-  error: {
-    padding: 20,
-    borderRadius: 8,
-    marginBottom: 24,
-    backgroundColor: '#974343',
+  actionInfo: {
+    marginBottom: 18,
   },
 
-  errorText: {
-    fontSize: 15,
-    opacity: 0.7,
+  actionTitle: {
+    fontSize: 17,
+    fontWeight: '700',
+    marginBottom: 5,
   },
 
+  actionDescription: {
+    fontSize: 13,
+    lineHeight: 19,
+    opacity: 0.55,
+  },
 
   buttonContainer: {
-    marginTop: 8,
+    marginTop: 2,
   },
 
+  /* =========================
+     LOADING
+  ========================= */
+
   loadingContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 20,
+    gap: 13,
+    padding: 18,
+    borderRadius: 14,
+    marginBottom: 18,
+    borderWidth: 1,
+    borderColor: '#DDE5F2',
+    backgroundColor: '#F7FAFF',
+  },
+
+  loadingTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    marginBottom: 2,
   },
 
   loadingText: {
-    marginTop: 10,
-    opacity: 0.7,
+    fontSize: 11,
+    opacity: 0.55,
   },
 
+  /* =========================
+     RESULTADO
+  ========================= */
+
   resultContainer: {
-    marginTop: 30,
-    padding: 16,
-    borderRadius: 8,
-    backgroundColor: '#eee',
+    padding: 20,
+    borderRadius: 16,
+    marginBottom: 18,
+    borderWidth: 1,
+    borderColor: '#D9E5F7',
+    backgroundColor: '#F8FAFD',
+  },
+
+  resultHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 15,
+  },
+
+  resultTitle: {
+    fontSize: 17,
+    fontWeight: '800',
+  },
+
+  resultSubtitle: {
+    fontSize: 12,
+    marginTop: 3,
+    opacity: 0.55,
+  },
+
+  successBadge: {
+    paddingHorizontal: 9,
+    paddingVertical: 5,
+    borderRadius: 6,
+    backgroundColor: '#DCFCE7',
+  },
+
+  successBadgeText: {
+    fontSize: 9,
+    fontWeight: '800',
+    color: '#15803D',
+  },
+
+  resultCode: {
+    padding: 15,
+    borderRadius: 10,
+    backgroundColor: '#111827',
+    overflow: 'hidden',
   },
 
   resultText: {
     fontFamily: 'monospace',
-    fontSize: 12,
+    fontSize: 11,
+    lineHeight: 17,
+    color: '#E5E7EB',
   },
-});
+
+  /* =========================
+     ERRO
+  ========================= */
+
+  errorContainer: {
+    flexDirection: 'row',
+    padding: 18,
+    borderRadius: 14,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#FECACA',
+    backgroundColor: '#FEF2F2',
+  },
+
+  errorIcon: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 11,
+    backgroundColor: '#FEE2E2',
+  },
+
+  errorIconText: {
+    fontSize: 15,
+    fontWeight: '800',
+    color: '#DC2626',
+  },
+
+  errorContent: {
+    flex: 1,
+  },
+
+  errorTitle: {
+    fontSize: 13,
+    fontWeight: '800',
+    color: '#991B1B',
+    marginBottom: 5,
+  },
+
+  errorText: {
+    fontSize: 11,
+    lineHeight: 17,
+    color: '#B91C1C',
+  },
+});                       

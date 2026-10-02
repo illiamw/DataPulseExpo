@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Image,
   View,
   Text,
   StyleSheet,
@@ -48,10 +49,11 @@ export default function AboutDataPulse() {
       {/* IMAGEM HERO */}
       {/* ===================================================== */}
 
-      <ImagePlaceholder
-        title="Imagem principal do DataPulse"
-        description="Insira aqui uma imagem da aplicação, dashboard ou arquitetura geral."
-        height={260}
+      
+      <Image
+        source={require('@/assets/images/about1.png')}
+        style={styles.heroImage}
+        resizeMode="contain"
       />
 
       {/* ===================================================== */}
@@ -127,10 +129,10 @@ export default function AboutDataPulse() {
         </View>
       </Section>
 
-      <ImagePlaceholder
-        title="Visualização dos dados"
-        description="Espaço para screenshot do notebook, dataset ou análise exploratória."
-        height={280}
+      <Image
+        source={require('@/assets/images/about2.png')}
+        style={styles.heroImage}
+        resizeMode="contain"
       />
 
       {/* ===================================================== */}
@@ -172,10 +174,10 @@ export default function AboutDataPulse() {
         </View>
       </Section>
 
-      <ImagePlaceholder
-        title="Arquitetura do pipeline"
-        description="Insira aqui o diagrama da arquitetura RAW → SILVER → GOLD."
-        height={300}
+      <Image
+        source={require('@/assets/images/about3.png')}
+        style={styles.heroImage}
+        resizeMode="contain"
       />
 
       {/* ===================================================== */}
@@ -253,10 +255,10 @@ export default function AboutDataPulse() {
         </View>
       </Section>
 
-      <ImagePlaceholder
-        title="Experimentos no MLflow"
-        description="Espaço para screenshot do MLflow mostrando experimentos e métricas."
-        height={300}
+      <Image
+        source={require('@/assets/images/about4.png')}
+        style={styles.heroImage}
+        resizeMode="contain"
       />
 
       {/* ===================================================== */}
@@ -332,10 +334,10 @@ export default function AboutDataPulse() {
         </View>
       </Section>
 
-      <ImagePlaceholder
-        title="Arquitetura completa"
-        description="Insira aqui o diagrama completo da infraestrutura do DataPulse."
-        height={360}
+      <Image
+        source={require('@/assets/images/about1.png')}
+        style={styles.heroImage}
+        resizeMode="contain"
       />
 
       {/* ===================================================== */}
@@ -369,10 +371,10 @@ export default function AboutDataPulse() {
         </Text>
       </Section>
 
-      <ImagePlaceholder
-        title="GitHub Actions — Backend"
-        description="Insira aqui um screenshot do workflow de CI/CD."
-        height={320}
+      <Image
+        source={require('@/assets/images/about5.png')}
+        style={styles.heroImage}
+        resizeMode="contain"
       />
 
       {/* ===================================================== */}
@@ -438,10 +440,10 @@ export default function AboutDataPulse() {
         </View>
       </Section>
 
-      <ImagePlaceholder
-        title="Aplicação DataPulse"
-        description="Insira aqui screenshots da aplicação Web e Android."
-        height={360}
+      <Image
+        source={require('@/assets/images/about6.png')}
+        style={styles.heroImage}
+        resizeMode="contain"
       />
 
       {/* ===================================================== */}
@@ -523,12 +525,6 @@ export default function AboutDataPulse() {
           </View>
         </View>
       </Section>
-
-      <ImagePlaceholder
-        title="CI/CD Expo"
-        description="Espaço para screenshot dos workflows Android e Web."
-        height={320}
-      />
 
       {/* ===================================================== */}
       {/* RESULTADO */}
@@ -791,6 +787,12 @@ const styles = StyleSheet.create({
     
   },
   /* HERO */
+  heroImage: {
+    width: "100%",
+    maxWidth: 1100,
+    alignSelf: "center",
+    marginTop: 40,
+  },
 
   hero: {
     backgroundColor: "#0F172A",

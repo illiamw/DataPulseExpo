@@ -23,7 +23,9 @@
       },
       "package": "com.williamferreira.datapulse",
       "versionCode": 1,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "usesCleartextTraffic": true,
+      "userInterfaceStyle": "light"
     },
     "web": {
       "output": "static",

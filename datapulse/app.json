@@ -6,7 +6,8 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "datapulse",
-    "userInterfaceStyle": "automatic",
+    "usesCleartextTraffic": true,
+    "userInterfaceStyle": "light",
     "ios": {
       "icon": "./assets/expo.icon",
       "bundleIdentifier": "com.williamferreira.datapulse",

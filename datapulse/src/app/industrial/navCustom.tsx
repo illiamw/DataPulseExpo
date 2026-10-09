@@ -5,6 +5,7 @@ import {
   Text,
   View,
   useWindowDimensions,
+  useColorScheme
 } from 'react-native';
 import { useRouter } from 'expo-router';
 
@@ -26,6 +27,12 @@ function NavigationItem({
   description,
   onPress,
 }: NavigationItemProps) {
+  const colorScheme = useColorScheme();
+  
+    const styles =
+      colorScheme === 'dark'
+        ? themeStyles.dark
+        : themeStyles.light;
   return (
     <Pressable
       onPress={onPress}
@@ -61,6 +68,12 @@ export default function NavCustom({
   navExpand,
   setNavExpand,
 }: NavCustomProps) {
+  const colorScheme = useColorScheme();
+  
+    const styles =
+      colorScheme === 'dark'
+        ? themeStyles.dark
+        : themeStyles.light;
   const router = useRouter();
   const { width } = useWindowDimensions();
 
@@ -167,204 +180,412 @@ export default function NavCustom({
   );
 }
 
-const styles = StyleSheet.create({
-  /* =========================
-     CONTAINER
-  ========================= */
+const themeStyles = {
+light: StyleSheet.create({
+/* =========================
+CONTAINER
+========================= */
 
-  container: {
-    flex: 1,
-    backgroundColor: '#F8FAFC',
+
+container: {
+  flex: 1,
+  backgroundColor: '#F8FAFC',
+},
+
+content: {
+  width: '100%',
+  maxWidth: 700,
+  alignSelf: 'center',
+  paddingHorizontal: 20,
+  paddingBottom: 40,
+  paddingTop: 120,
+},
+
+contentDesktop: {
+  maxWidth: 850,
+},
+
+/* =========================
+   HEADER
+========================= */
+
+header: {
+  flexDirection: 'row',
+  alignItems: 'flex-start',
+  justifyContent: 'space-between',
+  marginBottom: 24,
+},
+
+eyebrow: {
+  fontSize: 12,
+  fontWeight: '800',
+  letterSpacing: 1.5,
+  color: '#0284C7',
+  marginBottom: 6,
+},
+
+title: {
+  fontSize: 30,
+  fontWeight: '800',
+  color: '#0F172A',
+  marginBottom: 6,
+},
+
+subtitle: {
+  fontSize: 15,
+  lineHeight: 22,
+  color: '#64748B',
+  maxWidth: 550,
+},
+
+/* =========================
+   FECHAR
+========================= */
+
+closeButton: {
+  width: 42,
+  height: 42,
+  borderRadius: 12,
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: '#FFFFFF',
+  borderWidth: 1,
+  borderColor: '#E2E8F0',
+},
+
+closeButtonPressed: {
+  opacity: 0.65,
+  transform: [{ scale: 0.95 }],
+},
+
+closeButtonText: {
+  fontSize: 28,
+  lineHeight: 30,
+  color: '#64748B',
+  fontWeight: '400',
+},
+
+/* =========================
+   CARD DE NAVEGAÇÃO
+========================= */
+
+navigationCard: {
+  backgroundColor: '#FFFFFF',
+  borderRadius: 20,
+  padding: 12,
+  borderWidth: 1,
+  borderColor: '#E2E8F0',
+  shadowColor: '#000',
+  shadowOffset: {
+    width: 0,
+    height: 4,
   },
+  shadowOpacity: 0.04,
+  shadowRadius: 10,
+  elevation: 2,
+},
 
-  content: {
-    width: '100%',
-    maxWidth: 700,
-    alignSelf: 'center',
-    paddingHorizontal: 20,
-    paddingBottom: 40,
-    paddingTop: 120
+/* =========================
+   ITEM
+========================= */
+
+navigationItem: {
+  minHeight: 82,
+  flexDirection: 'row',
+  alignItems: 'center',
+  paddingHorizontal: 14,
+  paddingVertical: 12,
+  borderRadius: 15,
+},
+
+navigationItemPressed: {
+  backgroundColor: '#F0F9FF',
+  transform: [{ scale: 0.99 }],
+},
+
+iconContainer: {
+  width: 48,
+  height: 48,
+  borderRadius: 14,
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: '#E0F2FE',
+  marginRight: 14,
+},
+
+icon: {
+  fontSize: 22,
+  color: '#0284C7',
+},
+
+itemContent: {
+  flex: 1,
+  paddingRight: 10,
+},
+
+itemTitle: {
+  fontSize: 16,
+  fontWeight: '800',
+  color: '#0F172A',
+  marginBottom: 4,
+},
+
+itemDescription: {
+  fontSize: 13,
+  lineHeight: 19,
+  color: '#64748B',
+},
+
+arrow: {
+  fontSize: 23,
+  color: '#0284C7',
+  fontWeight: '600',
+},
+
+/* =========================
+   STATUS
+========================= */
+
+statusCard: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  marginTop: 16,
+  paddingHorizontal: 18,
+  paddingVertical: 16,
+  borderRadius: 16,
+  backgroundColor: '#F0FDF4',
+  borderWidth: 1,
+  borderColor: '#BBF7D0',
+},
+
+statusIndicator: {
+  width: 10,
+  height: 10,
+  borderRadius: 5,
+  backgroundColor: '#16A34A',
+  marginRight: 12,
+},
+
+statusContent: {
+  flex: 1,
+},
+
+statusTitle: {
+  fontSize: 14,
+  fontWeight: '800',
+  color: '#166534',
+  marginBottom: 2,
+},
+
+statusDescription: {
+  fontSize: 12,
+  color: '#15803D',
+},
+
+
+}),
+
+dark: StyleSheet.create({
+/* =========================
+CONTAINER
+========================= */
+
+
+container: {
+  flex: 1,
+  backgroundColor: '#0B1120',
+},
+
+content: {
+  width: '100%',
+  maxWidth: 700,
+  alignSelf: 'center',
+  paddingHorizontal: 20,
+  paddingBottom: 40,
+  paddingTop: 120,
+},
+
+contentDesktop: {
+  maxWidth: 850,
+},
+
+/* =========================
+   HEADER
+========================= */
+
+header: {
+  flexDirection: 'row',
+  alignItems: 'flex-start',
+  justifyContent: 'space-between',
+  marginBottom: 24,
+},
+
+eyebrow: {
+  fontSize: 12,
+  fontWeight: '800',
+  letterSpacing: 1.5,
+  color: '#38BDF8',
+  marginBottom: 6,
+},
+
+title: {
+  fontSize: 30,
+  fontWeight: '800',
+  color: '#F1F5F9',
+  marginBottom: 6,
+},
+
+subtitle: {
+  fontSize: 15,
+  lineHeight: 22,
+  color: '#94A3B8',
+  maxWidth: 550,
+},
+
+/* =========================
+   FECHAR
+========================= */
+
+closeButton: {
+  width: 42,
+  height: 42,
+  borderRadius: 12,
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: '#172033',
+  borderWidth: 1,
+  borderColor: '#334155',
+},
+
+closeButtonPressed: {
+  opacity: 0.65,
+  transform: [{ scale: 0.95 }],
+},
+
+closeButtonText: {
+  fontSize: 28,
+  lineHeight: 30,
+  color: '#CBD5E1',
+  fontWeight: '400',
+},
+
+/* =========================
+   CARD DE NAVEGAÇÃO
+========================= */
+
+navigationCard: {
+  backgroundColor: '#111827',
+  borderRadius: 20,
+  padding: 12,
+  borderWidth: 1,
+  borderColor: '#263449',
+  shadowColor: '#000000',
+  shadowOffset: {
+    width: 0,
+    height: 4,
   },
+  shadowOpacity: 0.2,
+  shadowRadius: 10,
+  elevation: 3,
+},
 
-  contentDesktop: {
-    maxWidth: 850,
-  },
+/* =========================
+   ITEM
+========================= */
 
-  /* =========================
-     HEADER
-  ========================= */
+navigationItem: {
+  minHeight: 82,
+  flexDirection: 'row',
+  alignItems: 'center',
+  paddingHorizontal: 14,
+  paddingVertical: 12,
+  borderRadius: 15,
+},
 
-  header: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    marginBottom: 24,
-  },
+navigationItemPressed: {
+  backgroundColor: '#172B40',
+  transform: [{ scale: 0.99 }],
+},
 
-  eyebrow: {
-    fontSize: 12,
-    fontWeight: '800',
-    letterSpacing: 1.5,
-    color: '#0284C7',
-    marginBottom: 6,
-  },
+iconContainer: {
+  width: 48,
+  height: 48,
+  borderRadius: 14,
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: '#153047',
+  marginRight: 14,
+},
 
-  title: {
-    fontSize: 30,
-    fontWeight: '800',
-    color: '#0F172A',
-    marginBottom: 6,
-  },
+icon: {
+  fontSize: 22,
+  color: '#38BDF8',
+},
 
-  subtitle: {
-    fontSize: 15,
-    lineHeight: 22,
-    color: '#64748B',
-    maxWidth: 550,
-  },
+itemContent: {
+  flex: 1,
+  paddingRight: 10,
+},
 
-  /* =========================
-     FECHAR
-  ========================= */
+itemTitle: {
+  fontSize: 16,
+  fontWeight: '800',
+  color: '#F1F5F9',
+  marginBottom: 4,
+},
 
-  closeButton: {
-    width: 42,
-    height: 42,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-  },
+itemDescription: {
+  fontSize: 13,
+  lineHeight: 19,
+  color: '#94A3B8',
+},
 
-  closeButtonPressed: {
-    opacity: 0.65,
-    transform: [{ scale: 0.95 }],
-  },
+arrow: {
+  fontSize: 23,
+  color: '#38BDF8',
+  fontWeight: '600',
+},
 
-  closeButtonText: {
-    fontSize: 28,
-    lineHeight: 30,
-    color: '#64748B',
-    fontWeight: '400',
-  },
+/* =========================
+   STATUS
+========================= */
 
-  /* =========================
-     CARD DE NAVEGAÇÃO
-  ========================= */
+statusCard: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  marginTop: 16,
+  paddingHorizontal: 18,
+  paddingVertical: 16,
+  borderRadius: 16,
+  backgroundColor: '#10291F',
+  borderWidth: 1,
+  borderColor: '#24543B',
+},
 
-  navigationCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 20,
-    padding: 12,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
+statusIndicator: {
+  width: 10,
+  height: 10,
+  borderRadius: 5,
+  backgroundColor: '#4ADE80',
+  marginRight: 12,
+},
 
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.04,
-    shadowRadius: 10,
-    elevation: 2,
-  },
+statusContent: {
+  flex: 1,
+},
 
-  /* =========================
-     ITEM
-  ========================= */
+statusTitle: {
+  fontSize: 14,
+  fontWeight: '800',
+  color: '#86EFAC',
+  marginBottom: 2,
+},
 
-  navigationItem: {
-    minHeight: 82,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    borderRadius: 15,
-  },
+statusDescription: {
+  fontSize: 12,
+  color: '#4ADE80',
+},
 
-  navigationItemPressed: {
-    backgroundColor: '#F0F9FF',
-    transform: [{ scale: 0.99 }],
-  },
 
-  iconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#E0F2FE',
-    marginRight: 14,
-  },
-
-  icon: {
-    fontSize: 22,
-    color: '#0284C7',
-  },
-
-  itemContent: {
-    flex: 1,
-    paddingRight: 10,
-  },
-
-  itemTitle: {
-    fontSize: 16,
-    fontWeight: '800',
-    color: '#0F172A',
-    marginBottom: 4,
-  },
-
-  itemDescription: {
-    fontSize: 13,
-    lineHeight: 19,
-    color: '#64748B',
-  },
-
-  arrow: {
-    fontSize: 23,
-    color: '#0284C7',
-    fontWeight: '600',
-  },
-
-  /* =========================
-     STATUS
-  ========================= */
-
-  statusCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 16,
-    paddingHorizontal: 18,
-    paddingVertical: 16,
-    borderRadius: 16,
-    backgroundColor: '#F0FDF4',
-    borderWidth: 1,
-    borderColor: '#BBF7D0',
-  },
-
-  statusIndicator: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: '#16A34A',
-    marginRight: 12,
-  },
-
-  statusContent: {
-    flex: 1,
-  },
-
-  statusTitle: {
-    fontSize: 14,
-    fontWeight: '800',
-    color: '#166534',
-    marginBottom: 2,
-  },
-
-  statusDescription: {
-    fontSize: 12,
-    color: '#15803D',
-  },
-});
+}),
+};

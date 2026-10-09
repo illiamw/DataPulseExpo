@@ -9,6 +9,7 @@ import {
   View,
   ActivityIndicator,
   useWindowDimensions,
+  useColorScheme
 } from 'react-native';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -101,6 +102,14 @@ const INITIAL_DATA: PredictionData = {
 };
 
 export default function PredicaoModelo() {
+
+  const colorScheme = useColorScheme();
+  
+    const styles =
+      colorScheme === 'dark'
+        ? themeStyles.dark
+        : themeStyles.light;
+
   const { width } = useWindowDimensions();
 
   const isDesktop = width >= 768;
@@ -1551,6 +1560,13 @@ function Metric({
   label: string;
   value: number;
 }) {
+  
+  const colorScheme = useColorScheme();
+  
+    const styles =
+      colorScheme === 'dark'
+        ? themeStyles.dark
+        : themeStyles.light;
   return (
     <View
       style={
@@ -1583,6 +1599,13 @@ function SectionHeader({
   number: string;
   title: string;
 }) {
+  
+  const colorScheme = useColorScheme();
+  
+    const styles =
+      colorScheme === 'dark'
+        ? themeStyles.dark
+        : themeStyles.light;
   return (
     <View
       style={
@@ -1624,7 +1647,15 @@ function SectionHeader({
    STYLES
 ===================================================== */
 
-const styles = StyleSheet.create({
+// =============================================================
+// THEMES
+// =============================================================
+
+const themeStyles = {
+  // ===========================================================
+  // LIGHT THEME
+  // ===========================================================
+  light: StyleSheet.create({
   container: {
     flex: 1,
   },
@@ -2211,5 +2242,596 @@ const styles = StyleSheet.create({
     fontSize: 11,
     lineHeight: 17,
     color: '#B91C1C',
+  }
+}),
+  dark: StyleSheet.create({
+    container: {
+    flex: 1,
   },
-});
+
+  content: {
+    width: '100%',
+    maxWidth: 1100,
+    alignSelf: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 120,
+    paddingBottom: 70,
+  },
+
+  contentDesktop: {
+    paddingHorizontal: 32,
+    paddingTop: 110,
+  },
+
+  /* HEADER */
+
+  header: {
+    marginBottom: 30,
+  },
+
+  headerBadge: {
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 7,
+    paddingHorizontal: 11,
+    paddingVertical: 6,
+    borderRadius: 20,
+    marginBottom: 14,
+    backgroundColor: '#E9EEF5',
+  },
+
+  headerDot: {
+    width: 7,
+    height: 7,
+    borderRadius: 4,
+    backgroundColor: '#2563EB',
+  },
+
+  headerBadgeText: {
+    fontSize: 10,
+    fontWeight: '800',
+    letterSpacing: 1,
+    color: '#2563EB',
+  },
+
+  title: {
+    fontSize: 32,
+    fontWeight: '800',
+    letterSpacing: -0.8,
+    marginBottom: 8,
+  },
+
+  description: {
+    maxWidth: 720,
+    fontSize: 15,
+    lineHeight: 23,
+    opacity: 0.62,
+  },
+
+  /* CARD */
+
+  card: {
+    borderWidth: 1,
+    borderColor: '#E3E7ED',
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 18,
+    backgroundColor: '#FFFFFF',
+  },
+
+  cardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
+
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    letterSpacing: -0.2,
+  },
+
+  cardSubtitle: {
+    fontSize: 13,
+    marginTop: 4,
+    opacity: 0.55,
+  },
+
+  countBadge: {
+    minWidth: 30,
+    height: 30,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#EFF6FF',
+  },
+
+  countBadgeText: {
+    fontSize: 12,
+    fontWeight: '800',
+    color: '#2563EB',
+  },
+
+  /* MODELOS */
+
+  modelsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 9,
+  },
+
+  modelButton: {
+    minHeight: 44,
+    paddingHorizontal: 14,
+    borderWidth: 1,
+    borderColor: '#DDE2E8',
+    borderRadius: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: '#FAFBFC',
+  },
+
+  modelButtonSelected: {
+    borderColor: '#2563EB',
+    backgroundColor: '#EFF6FF',
+  },
+
+  modelButtonPressed: {
+    opacity: 0.75,
+    transform: [
+      {
+        scale: 0.98,
+      },
+    ],
+  },
+
+  modelIndicator: {
+    width: 7,
+    height: 7,
+    borderRadius: 4,
+    backgroundColor: '#C5CBD3',
+  },
+
+  modelIndicatorSelected: {
+    backgroundColor: '#2563EB',
+  },
+
+  modelButtonText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#4B5563',
+  },
+
+  modelButtonTextSelected: {
+    color: '#1D4ED8',
+  },
+
+  modelsLoading: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingVertical: 8,
+  },
+
+  loadingText: {
+    fontSize: 12,
+    opacity: 0.6,
+  },
+
+  /* MODELO SELECIONADO */
+
+  selectedModelContainer: {
+    minHeight: 100,
+    padding: 18,
+    borderRadius: 16,
+    marginBottom: 18,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#D9E5F7',
+    backgroundColor: '#F5F9FF',
+  },
+
+  selectedModelIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 14,
+    backgroundColor: '#2563EB',
+  },
+
+  selectedModelIconText: {
+    color: '#FFFFFF',
+    fontSize: 13,
+    fontWeight: '800',
+  },
+
+  selectedModelInfo: {
+    flex: 1,
+  },
+
+  selectedModelLabel: {
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 1,
+    color: '#64748B',
+    marginBottom: 3,
+  },
+
+  selectedModel: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#172033',
+  },
+
+  modelId: {
+    fontSize: 10,
+    marginTop: 3,
+    color: '#64748B',
+  },
+
+  metricsContainer: {
+    flexDirection: 'row',
+    gap: 14,
+  },
+
+  metric: {
+    alignItems: 'flex-end',
+  },
+
+  metricLabel: {
+    fontSize: 9,
+    fontWeight: '600',
+    color: '#64748B',
+    marginBottom: 2,
+  },
+
+  metricValue: {
+    fontSize: 13,
+    fontWeight: '800',
+    color: '#172033',
+  },
+
+  /* SEÇÕES */
+
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 12,
+    marginBottom: 18,
+  },
+
+  sectionLine: {
+    width: 3,
+    height: 20,
+    borderRadius: 2,
+    marginRight: 9,
+    backgroundColor: '#2563EB',
+  },
+
+  sectionNumberSmall: {
+    width: 25,
+    height: 25,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 8,
+    backgroundColor: '#EFF6FF',
+  },
+
+  sectionNumberSmallText: {
+    fontSize: 9,
+    fontWeight: '800',
+    color: '#2563EB',
+  },
+
+  sectionTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#334155',
+  },
+
+  sectionNumber: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#EFF6FF',
+  },
+
+  sectionNumberText: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: '#2563EB',
+  },
+
+  /* INPUTS */
+
+  parametersGrid: {
+    gap: 16,
+  },
+
+  parameterContainer: {
+    marginBottom: 2,
+  },
+
+  parameterDesktop: {
+    width: '31.8%',
+  },
+
+  label: {
+    fontSize: 13,
+    fontWeight: '700',
+    marginBottom: 7,
+    color: '#374151',
+  },
+
+  rangeText: {
+    fontSize: 10,
+    marginTop: 5,
+    color: '#8A94A3',
+  },
+
+  datePickerContainer: {
+    minHeight: 45,
+    justifyContent: 'center',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#DDE2E8',
+    backgroundColor: '#FAFBFC',
+  },
+
+  dateValue: {
+    fontSize: 10,
+    marginTop: 5,
+    color: '#8A94A3',
+  },
+
+  /* SELECT */
+
+  selectContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 7,
+  },
+
+  selectOption: {
+    minHeight: 42,
+    paddingHorizontal: 13,
+    borderWidth: 1,
+    borderColor: '#DDE2E8',
+    borderRadius: 9,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FAFBFC',
+  },
+
+  selectOptionSelected: {
+    borderColor: '#2563EB',
+    backgroundColor: '#EFF6FF',
+  },
+
+  selectOptionText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#4B5563',
+  },
+
+  selectOptionTextSelected: {
+    color: '#1D4ED8',
+  },
+
+  /* ACTION */
+
+  actionCard: {
+    padding: 20,
+    borderRadius: 16,
+    marginBottom: 18,
+    borderWidth: 1,
+    borderColor: '#E3E7ED',
+    backgroundColor: '#FFFFFF',
+  },
+
+  actionInfo: {
+    marginBottom: 18,
+  },
+
+  actionTitle: {
+    fontSize: 17,
+    fontWeight: '700',
+    marginBottom: 5,
+  },
+
+  actionDescription: {
+    maxWidth: 720,
+    fontSize: 13,
+    lineHeight: 19,
+    opacity: 0.55,
+  },
+
+  /* LOADING */
+
+  loadingCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 13,
+    padding: 18,
+    borderRadius: 14,
+    marginBottom: 18,
+    borderWidth: 1,
+    borderColor: '#DDE5F2',
+    backgroundColor: '#F7FAFF',
+  },
+
+  loadingTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    marginBottom: 2,
+  },
+
+  /* RESULTADO */
+
+  resultContainer: {
+    padding: 20,
+    borderRadius: 16,
+    marginBottom: 18,
+    borderWidth: 1,
+    borderColor: '#E3E7ED',
+    backgroundColor: '#FFFFFF',
+  },
+
+  resultHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+
+  resultTitle: {
+    fontSize: 18,
+    fontWeight: '800',
+  },
+
+  resultSubtitle: {
+    fontSize: 12,
+    marginTop: 3,
+    opacity: 0.55,
+  },
+
+  resultBadge: {
+    paddingHorizontal: 9,
+    paddingVertical: 5,
+    borderRadius: 6,
+  },
+
+  successBadge: {
+    backgroundColor: '#DCFCE7',
+  },
+
+  failureBadge: {
+    backgroundColor: '#FEE2E2',
+  },
+
+  resultBadgeText: {
+    fontSize: 9,
+    fontWeight: '800',
+    color: '#64748B',
+  },
+
+  predictionCard: {
+    minHeight: 180,
+    borderRadius: 16,
+    padding: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+  },
+
+  failureCard: {
+    backgroundColor: '#FEF2F2',
+    borderColor: '#FECACA',
+  },
+
+  successCard: {
+    backgroundColor: '#F0FDF4',
+    borderColor: '#BBF7D0',
+  },
+
+  predictionIcon: {
+    width: 58,
+    height: 58,
+    borderRadius: 29,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 12,
+  },
+
+  failureIcon: {
+    backgroundColor: '#DC2626',
+  },
+
+  successIcon: {
+    backgroundColor: '#16A34A',
+  },
+
+  predictionIconText: {
+    color: '#FFFFFF',
+    fontSize: 28,
+    fontWeight: '800',
+  },
+
+  predictionText: {
+    fontSize: 28,
+    fontWeight: '800',
+    marginBottom: 5,
+  },
+
+  failureText: {
+    color: '#B91C1C',
+  },
+
+  successText: {
+    color: '#15803D',
+  },
+
+  predictionDescription: {
+    maxWidth: 600,
+    textAlign: 'center',
+    fontSize: 12,
+    lineHeight: 18,
+    opacity: 0.6,
+  },
+
+  /* ERRO */
+
+  errorContainer: {
+    flexDirection: 'row',
+    padding: 18,
+    borderRadius: 14,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#FECACA',
+    backgroundColor: '#FEF2F2',
+  },
+
+  errorIcon: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 11,
+    backgroundColor: '#FEE2E2',
+  },
+
+  errorIconText: {
+    fontSize: 15,
+    fontWeight: '800',
+    color: '#DC2626',
+  },
+
+  errorContent: {
+    flex: 1,
+  },
+
+  errorTitle: {
+    fontSize: 13,
+    fontWeight: '800',
+    color: '#991B1B',
+    marginBottom: 5,
+  },
+
+  errorText: {
+    fontSize: 11,
+    lineHeight: 17,
+    color: '#B91C1C',
+  }
+  })
+}
+;

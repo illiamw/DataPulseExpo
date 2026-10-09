@@ -9,6 +9,7 @@ import {
   View,
   ActivityIndicator,
   useWindowDimensions,
+  useColorScheme
 } from 'react-native';
 
 import TextInputCustom from '@/components/ui/TextInputCustom';
@@ -221,6 +222,14 @@ const MODELS: Record<ModelName, ModelConfig> = {
 const MODEL_NAMES = Object.keys(MODELS) as ModelName[];
 
 export default function TreinoModelo() {
+
+  const colorScheme = useColorScheme();
+  
+    const styles =
+      colorScheme === 'dark'
+        ? themeStyles.dark
+        : themeStyles.light;
+
   const { width } = useWindowDimensions();
 
   const isDesktop = width >= 768;
@@ -684,7 +693,15 @@ export default function TreinoModelo() {
   );
 }
 
-const styles = StyleSheet.create({
+// =============================================================
+// THEMES
+// =============================================================
+
+const themeStyles = {
+  // ===========================================================
+  // LIGHT THEME
+  // ===========================================================
+  light: StyleSheet.create({
   container: {
     flex: 1,
   },
@@ -1175,4 +1192,494 @@ const styles = StyleSheet.create({
     lineHeight: 17,
     color: '#B91C1C',
   },
-});                       
+}), dark: StyleSheet.create({container: {
+    flex: 1,
+  },
+
+  content: {
+    width: '100%',
+    maxWidth: 1100,
+    alignSelf: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 120,
+    paddingBottom: 70,
+  },
+
+  contentDesktop: {
+    paddingHorizontal: 32,
+    paddingTop: 110,
+  },
+
+  /* =========================
+     HEADER
+  ========================= */
+
+  header: {
+    marginBottom: 30,
+  },
+
+  headerBadge: {
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 7,
+    paddingHorizontal: 11,
+    paddingVertical: 6,
+    borderRadius: 20,
+    marginBottom: 14,
+    backgroundColor: '#E9EEF5',
+  },
+
+  headerDot: {
+    width: 7,
+    height: 7,
+    borderRadius: 4,
+    backgroundColor: '#2563EB',
+  },
+
+  headerBadgeText: {
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 1,
+    color: '#2563EB',
+  },
+
+  title: {
+    fontSize: 32,
+    fontWeight: '800',
+    letterSpacing: -0.8,
+    marginBottom: 8,
+  },
+
+  description: {
+    maxWidth: 680,
+    fontSize: 15,
+    lineHeight: 23,
+    opacity: 0.62,
+  },
+
+  /* =========================
+     CARD
+  ========================= */
+
+  card: {
+    borderWidth: 1,
+    borderColor: '#E3E7ED',
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 18,
+    backgroundColor: '#FFFFFF',
+  },
+
+  cardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
+
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    letterSpacing: -0.2,
+  },
+
+  cardSubtitle: {
+    fontSize: 13,
+    marginTop: 4,
+    opacity: 0.55,
+  },
+
+  /* =========================
+     MODELOS
+  ========================= */
+
+  modelsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 9,
+  },
+
+  modelButton: {
+    minHeight: 44,
+    paddingHorizontal: 14,
+    borderWidth: 1,
+    borderColor: '#DDE2E8',
+    borderRadius: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: '#FAFBFC',
+  },
+
+  modelButtonSelected: {
+    borderColor: '#2563EB',
+    backgroundColor: '#EFF6FF',
+  },
+
+  modelButtonPressed: {
+    opacity: 0.75,
+    transform: [{ scale: 0.98 }],
+  },
+
+  modelIndicator: {
+    width: 7,
+    height: 7,
+    borderRadius: 4,
+    backgroundColor: '#C5CBD3',
+  },
+
+  modelIndicatorSelected: {
+    backgroundColor: '#2563EB',
+  },
+
+  modelButtonText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#4B5563',
+  },
+
+  modelButtonTextSelected: {
+    color: '#1D4ED8',
+  },
+
+  /* =========================
+     MODELO SELECIONADO
+  ========================= */
+
+  selectedModelContainer: {
+    minHeight: 90,
+    padding: 18,
+    borderRadius: 16,
+    marginBottom: 18,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#D9E5F7',
+    backgroundColor: '#F5F9FF',
+  },
+
+  selectedModelIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 14,
+    backgroundColor: '#2563EB',
+  },
+
+  selectedModelIconText: {
+    color: '#FFFFFF',
+    fontSize: 13,
+    fontWeight: '800',
+  },
+
+  selectedModelInfo: {
+    flex: 1,
+  },
+
+  selectedModelLabel: {
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 1,
+    color: '#64748B',
+    marginBottom: 3,
+  },
+
+  selectedModel: {
+    fontSize: 19,
+    fontWeight: '800',
+    color: '#172033',
+  },
+
+  selectedModelApi: {
+    fontSize: 11,
+    marginTop: 3,
+    color: '#64748B',
+  },
+
+  statusBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 20,
+    backgroundColor: '#E8F7EF',
+  },
+
+  statusDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#16A34A',
+  },
+
+  statusText: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#15803D',
+  },
+
+  /* =========================
+     PARÂMETROS
+  ========================= */
+
+  parametersGrid: {
+    gap: 16,
+  },
+
+  parametersGridDesktop: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+
+  parameterContainer: {
+    marginBottom: 2,
+  },
+
+  parameterDesktop: {
+    width: '31.8%',
+  },
+
+  label: {
+    fontSize: 13,
+    fontWeight: '700',
+    marginBottom: 7,
+    color: '#374151',
+  },
+
+  defaultValue: {
+    fontSize: 10,
+    marginTop: 5,
+    color: '#8A94A3',
+  },
+
+  parameterCount: {
+    minWidth: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#EFF6FF',
+  },
+
+  parameterCountText: {
+    fontSize: 12,
+    fontWeight: '800',
+    color: '#2563EB',
+  },
+
+  /* =========================
+     SEM PARÂMETROS
+  ========================= */
+
+  emptyParameters: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 18,
+    borderRadius: 16,
+    marginBottom: 18,
+    borderWidth: 1,
+    borderColor: '#E3E7ED',
+    backgroundColor: '#FFFFFF',
+  },
+
+  emptyIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+    backgroundColor: '#E8F7EF',
+  },
+
+  emptyIconText: {
+    fontSize: 17,
+    fontWeight: '800',
+    color: '#16A34A',
+  },
+
+  emptyContent: {
+    flex: 1,
+  },
+
+  emptyTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    marginBottom: 3,
+  },
+
+  emptyText: {
+    fontSize: 12,
+    lineHeight: 18,
+    opacity: 0.55,
+  },
+
+  /* =========================
+     AÇÃO
+  ========================= */
+
+  actionCard: {
+    padding: 20,
+    borderRadius: 16,
+    marginBottom: 18,
+    borderWidth: 1,
+    borderColor: '#E3E7ED',
+    backgroundColor: '#FFFFFF',
+  },
+
+  actionInfo: {
+    marginBottom: 18,
+  },
+
+  actionTitle: {
+    fontSize: 17,
+    fontWeight: '700',
+    marginBottom: 5,
+  },
+
+  actionDescription: {
+    fontSize: 13,
+    lineHeight: 19,
+    opacity: 0.55,
+  },
+
+  buttonContainer: {
+    marginTop: 2,
+  },
+
+  /* =========================
+     LOADING
+  ========================= */
+
+  loadingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 13,
+    padding: 18,
+    borderRadius: 14,
+    marginBottom: 18,
+    borderWidth: 1,
+    borderColor: '#DDE5F2',
+    backgroundColor: '#F7FAFF',
+  },
+
+  loadingTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    marginBottom: 2,
+  },
+
+  loadingText: {
+    fontSize: 11,
+    opacity: 0.55,
+  },
+
+  /* =========================
+     RESULTADO
+  ========================= */
+
+  resultContainer: {
+    padding: 20,
+    borderRadius: 16,
+    marginBottom: 18,
+    borderWidth: 1,
+    borderColor: '#D9E5F7',
+    backgroundColor: '#F8FAFD',
+  },
+
+  resultHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 15,
+  },
+
+  resultTitle: {
+    fontSize: 17,
+    fontWeight: '800',
+  },
+
+  resultSubtitle: {
+    fontSize: 12,
+    marginTop: 3,
+    opacity: 0.55,
+  },
+
+  successBadge: {
+    paddingHorizontal: 9,
+    paddingVertical: 5,
+    borderRadius: 6,
+    backgroundColor: '#DCFCE7',
+  },
+
+  successBadgeText: {
+    fontSize: 9,
+    fontWeight: '800',
+    color: '#15803D',
+  },
+
+  resultCode: {
+    padding: 15,
+    borderRadius: 10,
+    backgroundColor: '#111827',
+    overflow: 'hidden',
+  },
+
+  resultText: {
+    fontFamily: 'monospace',
+    fontSize: 11,
+    lineHeight: 17,
+    color: '#E5E7EB',
+  },
+
+  /* =========================
+     ERRO
+  ========================= */
+
+  errorContainer: {
+    flexDirection: 'row',
+    padding: 18,
+    borderRadius: 14,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#FECACA',
+    backgroundColor: '#FEF2F2',
+  },
+
+  errorIcon: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 11,
+    backgroundColor: '#FEE2E2',
+  },
+
+  errorIconText: {
+    fontSize: 15,
+    fontWeight: '800',
+    color: '#DC2626',
+  },
+
+  errorContent: {
+    flex: 1,
+  },
+
+  errorTitle: {
+    fontSize: 13,
+    fontWeight: '800',
+    color: '#991B1B',
+    marginBottom: 5,
+  },
+
+  errorText: {
+    fontSize: 11,
+    lineHeight: 17,
+    color: '#B91C1C',
+  },})
+};                       

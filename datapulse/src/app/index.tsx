@@ -8,6 +8,7 @@ import {
   View,
   Image,
   useWindowDimensions,
+  useColorScheme
 } from 'react-native';
 
 import { useAuth, useSignIn, useSSO } from '@clerk/expo';
@@ -22,6 +23,12 @@ import ButtonSocialCustom from '@/components/ui/ButtonSocialCustom';
 
 
 export default function MainScreen() {
+  const colorScheme = useColorScheme();
+
+  const styles =
+    colorScheme === 'dark'
+      ? themeStyles.dark
+      : themeStyles.light;
 
   // =========================================================
   // CLERK
@@ -152,56 +159,56 @@ export default function MainScreen() {
   // EMAIL SIGN UP
   // =========================================================
 
-const handleSignIn = async () => {
-  if (!isLoaded) return;
+  const handleSignIn = async () => {
+    if (!isLoaded) return;
 
-  try {
-    setIsLoading(true);
+    try {
+      setIsLoading(true);
 
-    const { error } = await signIn.password({
-      identifier: emailAddress.trim(),
-      password,
-    });
+      const { error } = await signIn.password({
+        identifier: emailAddress.trim(),
+        password,
+      });
 
-    if (error) {
-      Alert.alert(
-        'Erro',
-        error.message || 'E-mail ou senha inválidos.'
-      );
+      if (error) {
+        Alert.alert(
+          'Erro',
+          error.message || 'E-mail ou senha inválidos.'
+        );
 
-      return;
-    }
+        return;
+      }
 
-    // Finaliza o processo de autenticação
-    const { error: finalizeError } = await signIn.finalize();
+      // Finaliza o processo de autenticação
+      const { error: finalizeError } = await signIn.finalize();
 
-    if (finalizeError) {
-      Alert.alert(
-        'Erro',
-        finalizeError.message ||
+      if (finalizeError) {
+        Alert.alert(
+          'Erro',
+          finalizeError.message ||
           'Não foi possível finalizar o login.'
-      );
+        );
 
-      return;
-    }
+        return;
+      }
 
-    // Somente depois de finalizar a sessão
-    router.replace('/home');
+      // Somente depois de finalizar a sessão
+      router.replace('/home');
 
-  } catch (error: any) {
-    console.error('Erro no login:', error);
+    } catch (error: any) {
+      console.error('Erro no login:', error);
 
-    Alert.alert(
-      'Erro',
-      error?.errors?.[0]?.message ||
+      Alert.alert(
+        'Erro',
+        error?.errors?.[0]?.message ||
         error?.message ||
         'Não foi possível realizar o login.'
-    );
+      );
 
-  } finally {
-    setIsLoading(false);
-  }
-};
+    } finally {
+      setIsLoading(false);
+    }
+  };
   // =========================================================
   // GOOGLE LOGIN
   // =========================================================
@@ -211,15 +218,11 @@ const handleSignIn = async () => {
   }
 
   const handleGoogleSignIn = async () => {
-
     try {
-
       // =======================================================
-      // WEB
+      // WEB — OAuth via navegador
       // =======================================================
-
       if (Platform.OS === 'web') {
-
         const {
           createdSessionId,
           setActive,
@@ -227,50 +230,71 @@ const handleSignIn = async () => {
           strategy: 'oauth_google',
         });
 
-        if (createdSessionId && setActive) {
 
-          await setActive({
-            session: createdSessionId,
-          });
+        if (!createdSessionId || !setActive) {
+          console.error(
+            '[Google Auth][Web] Sessão não criada.',
+            { createdSessionId: !!createdSessionId }
+          );
 
-          router.replace('/home');
+          Alert.alert(
+            'Login não concluído',
+            'O Google não retornou uma sessão válida. Tente novamente.'
+          );
+
+          return;
         }
 
+        await setActive({ session: createdSessionId });
+        router.replace('/home');
         return;
       }
 
       // =======================================================
-      // ANDROID / IOS
+      // ANDROID / IOS — Google nativo com Clerk
       // =======================================================
-
       const {
         createdSessionId,
         setActive,
       } = await startGoogleAuthenticationFlow();
 
-      if (createdSessionId && setActive) {
+      if (!createdSessionId || !setActive) {
+        console.error(
+          '[Google Auth][Native] Sessão não criada.',
+          { createdSessionId: !!createdSessionId }
+        );
 
-        await setActive({
-          session: createdSessionId,
-        });
+        Alert.alert(
+          'Login não concluído',
+          'Não foi possível criar sua sessão. Verifique a configuração do login Google e tente novamente.'
+        );
 
-        router.replace('/home');
+        return;
       }
 
-    } catch (error: any) {
+      await setActive({ session: createdSessionId });
 
+      router.replace('/home');
+
+
+    } catch (error: unknown) {
       console.error(
-        'Erro ao autenticar com Google:',
+        '[Google Auth] Falha na autenticação:',
         error
       );
 
-      Alert.alert(
-        'Erro',
-        error?.message ||
-          'Não foi possível entrar com o Google.'
-      );
+
+      const message =
+        error instanceof Error
+          ? error.message
+          : 'Não foi possível entrar com o Google.';
+
+      Alert.alert('Erro no login', message);
+
+
     }
   };
+
 
   // =========================================================
   // LOADING CLERK
@@ -287,7 +311,7 @@ const handleSignIn = async () => {
   if (isSignedIn) {
     router.replace('/home');
     return null;
-  
+
   }
 
   // =========================================================
@@ -436,7 +460,7 @@ const handleSignIn = async () => {
         <View style={styles.col}>
 
           <ButtonSocialCustom
-          disabled={true}
+            disabled={true}
             onPress={() => {
               Alert.alert(
                 'Em breve',
@@ -474,7 +498,7 @@ const handleSignIn = async () => {
       {/* VERSION */}
 
       <Text style={styles.text}>
-        V 1.0.0
+        V 1.0.1
       </Text>
 
     </View>
@@ -483,123 +507,193 @@ const handleSignIn = async () => {
 
 
 // =============================================================
-// STYLES
+// THEMES
 // =============================================================
 
-const styles = StyleSheet.create({
+const themeStyles = {
+  // ===========================================================
+  // LIGHT THEME
+  // ===========================================================
+  light: StyleSheet.create({
 
-  socialDivider: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    marginVertical: 24,
-  },
+    socialDivider: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      width: '100%',
+      marginVertical: 24,
+    },
 
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#D9D9D9',
-  },
+    dividerLine: {
+      flex: 1,
+      height: 1,
+      backgroundColor: '#D9D9D9',
+    },
 
-  dividerText: {
-    marginHorizontal: 12,
-    fontSize: 13,
-    color: '#777',
-    textAlign: 'center',
-  },
+    dividerText: {
+      marginHorizontal: 12,
+      fontSize: 13,
+      color: '#777777',
+      textAlign: 'center',
+    },
 
-  container: {
+    container: {
+      flex: 1,
+      width: '100%',
+      padding: 20,
+      gap: 12,
+      justifyContent: 'center',
+      backgroundColor: '#FFFFFF',
+    },
 
-    flex: 1,
+    containerLarge: {
+      width: '100%',
+      maxWidth: 700,
+      alignSelf: 'center',
+    },
 
-    width: '100%',
+    columns: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginVertical: 10,
+    },
 
-    padding: 20,
+    col: {
+      flex: 1,
+      marginHorizontal: 5,
+    },
 
-    gap: 12,
+    image: {
+      width: 200,
+      height: 200,
+      alignSelf: 'center',
+      marginBottom: 20,
+    },
 
-    justifyContent: 'center',
+    title: {
+      fontSize: 24,
+      fontWeight: '700',
+      textAlign: 'center',
+      marginBottom: 8,
+      color: '#1F2937',
+    },
 
-  },
+    subtitle: {
+      textAlign: 'center',
+      color: '#6B7280',
+    },
 
-  containerLarge: {
+    email: {
+      textAlign: 'center',
+      fontWeight: '600',
+      marginBottom: 10,
+      color: '#1F2937',
+    },
 
-    width: '100%',
+    text: {
+      alignSelf: 'center',
+      color: '#374151',
+    },
 
-    maxWidth: 700,
+    signupLink: {
+      textAlign: 'center',
+      marginTop: 10,
+      fontWeight: '600',
+      color: '#2563EB',
+    },
 
-    alignSelf: 'center',
+  }),
 
-  },
+  // ===========================================================
+  // DARK THEME
+  // ===========================================================
+  dark: StyleSheet.create({
 
-  columns: {
+    socialDivider: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      width: '100%',
+      marginVertical: 24,
+    },
 
-    flexDirection: 'row',
+    dividerLine: {
+      flex: 1,
+      height: 1,
+      backgroundColor: '#374151',
+    },
 
-    alignItems: 'center',
+    dividerText: {
+      marginHorizontal: 12,
+      fontSize: 13,
+      color: '#9CA3AF',
+      textAlign: 'center',
+    },
 
-    justifyContent: 'center',
+    container: {
+      flex: 1,
+      width: '100%',
+      padding: 20,
+      gap: 12,
+      justifyContent: 'center',
+      backgroundColor: '#111827',
+    },
 
-    marginVertical: 10,
+    containerLarge: {
+      width: '100%',
+      maxWidth: 700,
+      alignSelf: 'center',
+    },
 
-  },
+    columns: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginVertical: 10,
+    },
 
-  col: {
+    col: {
+      flex: 1,
+      marginHorizontal: 5,
+    },
 
-    flex: 1,
+    image: {
+      width: 200,
+      height: 200,
+      alignSelf: 'center',
+      marginBottom: 20,
+    },
 
-    marginHorizontal: 5,
+    title: {
+      fontSize: 24,
+      fontWeight: '700',
+      textAlign: 'center',
+      marginBottom: 8,
+      color: '#F9FAFB',
+    },
 
-  },
+    subtitle: {
+      textAlign: 'center',
+      color: '#9CA3AF',
+    },
 
-  image: {
+    email: {
+      textAlign: 'center',
+      fontWeight: '600',
+      marginBottom: 10,
+      color: '#F9FAFB',
+    },
 
-    width: 200,
+    text: {
+      alignSelf: 'center',
+      color: '#E5E7EB',
+    },
 
-    height: 200,
+    signupLink: {
+      textAlign: 'center',
+      marginTop: 10,
+      fontWeight: '600',
+      color: '#60A5FA',
+    },
 
-    alignSelf: 'center',
-
-    marginBottom: 20,
-
-  },
-
-  title: {
-
-    fontSize: 24,
-
-    fontWeight: '700',
-
-    textAlign: 'center',
-
-    marginBottom: 8,
-
-  },
-
-  subtitle: {
-
-    textAlign: 'center',
-
-  },
-
-  email: {
-
-    textAlign: 'center',
-
-    fontWeight: '600',
-
-    marginBottom: 10,
-
-  },
-
-  text: {
-
-    alignSelf: 'center',
-
-  },
-  signupLink: {
-    textAlign: 'center',
-    marginTop: 10,
-    fontWeight: '600',
-  }
-});
+  }),
+};

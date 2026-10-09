@@ -7,6 +7,7 @@ import {
   Text,
   View,
   useWindowDimensions,
+  useColorScheme
 } from 'react-native';
 
 import { useClerk, useUser } from '@clerk/expo';
@@ -23,6 +24,12 @@ export default function Config({
   configExpanded,
   setConfigExpanded,
 }: ConfigProps) {
+  const colorScheme = useColorScheme();
+
+  const styles =
+    colorScheme === 'dark'
+      ? themeStyles.dark
+      : themeStyles.light;
   const { signOut } = useClerk();
   const { user } = useUser();
   const router = useRouter();
@@ -249,323 +256,519 @@ export default function Config({
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F8FAFC',
-  },
 
-  contentContainer: {
-    flexGrow: 1,
-    paddingVertical: 40,
-    paddingHorizontal: 20,
-  },
-
-  content: {
-    width: '100%',
-    maxWidth: 700,
-    alignSelf: 'center',
-  },
-
-  contentDesktop: {
-    maxWidth: 850,
-  },
-
-  /* =========================
-     HEADER
-  ========================= */
-
-  header: {
-    marginBottom: 28,
-  },
-
-  eyebrow: {
-    fontSize: 13,
-    fontWeight: '800',
-    letterSpacing: 1.5,
-    color: '#0284C7',
-    marginBottom: 8,
-  },
-
-  title: {
-    fontSize: 32,
-    fontWeight: '800',
-    color: '#0F172A',
-    marginBottom: 8,
-  },
-
-  subtitle: {
-    fontSize: 16,
-    lineHeight: 24,
-    color: '#64748B',
-    maxWidth: 600,
-  },
-
-  /* =========================
-     PERFIL
-  ========================= */
-
-  profileCard: {
-    backgroundColor: '#0F172A',
-    borderRadius: 20,
-    padding: 24,
-    marginBottom: 28,
-
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 6,
+const themeStyles = {
+  light: StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#F8FAFC',
     },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-    elevation: 4,
-  },
-
-  profileHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  avatar: {
-    width: 82,
-    height: 82,
-    borderRadius: 41,
-    borderWidth: 3,
-    borderColor: '#38BDF8',
-  },
-
-  avatarPlaceholder: {
-    width: 82,
-    height: 82,
-    borderRadius: 41,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#0284C7',
-  },
-
-  avatarPlaceholderText: {
-    color: '#FFFFFF',
-    fontSize: 32,
-    fontWeight: '800',
-  },
-
-  profileInfo: {
-    flex: 1,
-    marginLeft: 18,
-  },
-
-  greeting: {
-    color: '#94A3B8',
-    fontSize: 14,
-    marginBottom: 2,
-  },
-
-  profileName: {
-    color: '#FFFFFF',
-    fontSize: 24,
-    fontWeight: '800',
-    marginBottom: 4,
-  },
-
-  profileEmail: {
-    color: '#CBD5E1',
-    fontSize: 14,
-  },
-
-  /* =========================
-     SEÇÕES
-  ========================= */
-
-  section: {
-    marginBottom: 28,
-  },
-
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: '#0F172A',
-    marginBottom: 12,
-  },
-
-  /* =========================
-     INFORMAÇÕES
-  ========================= */
-
-  infoCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 18,
-    paddingHorizontal: 20,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
+    contentContainer: {
+      flexGrow: 1,
+      paddingVertical: 40,
+      paddingHorizontal: 20,
     },
-    shadowOpacity: 0.04,
-    shadowRadius: 8,
-    elevation: 2,
-  },
-
-  infoRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 18,
-  },
-
-  infoIcon: {
-    width: 42,
-    height: 42,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#EFF6FF',
-    marginRight: 14,
-  },
-
-  infoIconText: {
-    fontSize: 18,
-    color: '#0284C7',
-  },
-
-  infoContent: {
-    flex: 1,
-  },
-
-  label: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: '#94A3B8',
-    marginBottom: 4,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-
-  value: {
-    fontSize: 16,
-    color: '#0F172A',
-    fontWeight: '600',
-  },
-
-  divider: {
-    height: 1,
-    backgroundColor: '#E2E8F0',
-  },
-
-  /* =========================
-     AÇÕES
-  ========================= */
-
-  actions: {
-    gap: 12,
-  },
-
-  actionsDesktop: {
-    flexDirection: 'row',
-    alignItems: 'stretch',
-  },
-
-  homeButton: {
-    flex: 1,
-    minHeight: 82,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    paddingHorizontal: 18,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
+    content: {
+      width: '100%',
+      maxWidth: 700,
+      alignSelf: 'center',
     },
-    shadowOpacity: 0.03,
-    shadowRadius: 6,
-    elevation: 1,
-  },
+    contentDesktop: {
+      maxWidth: 850,
+    },
 
-  buttonPressed: {
-    opacity: 0.75,
-    transform: [{ scale: 0.99 }],
-  },
+    // HEADER
+    header: {
+      marginBottom: 28,
+    },
+    eyebrow: {
+      fontSize: 13,
+      fontWeight: '800',
+      letterSpacing: 1.5,
+      color: '#0284C7',
+      marginBottom: 8,
+    },
+    title: {
+      fontSize: 32,
+      fontWeight: '800',
+      color: '#0F172A',
+      marginBottom: 8,
+    },
+    subtitle: {
+      fontSize: 16,
+      lineHeight: 24,
+      color: '#64748B',
+      maxWidth: 600,
+    },
 
-  homeIcon: {
-    width: 46,
-    height: 46,
-    borderRadius: 13,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#E0F2FE',
-    marginRight: 14,
-  },
+    // PERFIL
+    profileCard: {
+      backgroundColor: '#0F172A',
+      borderRadius: 20,
+      padding: 24,
+      marginBottom: 28,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 6 },
+      shadowOpacity: 0.08,
+      shadowRadius: 12,
+      elevation: 4,
+    },
+    profileHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    avatar: {
+      width: 82,
+      height: 82,
+      borderRadius: 41,
+      borderWidth: 3,
+      borderColor: '#38BDF8',
+    },
+    avatarPlaceholder: {
+      width: 82,
+      height: 82,
+      borderRadius: 41,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#0284C7',
+    },
+    avatarPlaceholderText: {
+      color: '#FFFFFF',
+      fontSize: 32,
+      fontWeight: '800',
+    },
+    profileInfo: {
+      flex: 1,
+      marginLeft: 18,
+    },
+    greeting: {
+      color: '#94A3B8',
+      fontSize: 14,
+      marginBottom: 2,
+    },
+    profileName: {
+      color: '#FFFFFF',
+      fontSize: 24,
+      fontWeight: '800',
+      marginBottom: 4,
+    },
+    profileEmail: {
+      color: '#CBD5E1',
+      fontSize: 14,
+    },
 
-  homeIconText: {
-    fontSize: 26,
-    color: '#0284C7',
-    fontWeight: '700',
-  },
+    // SEÇÕES
+    section: {
+      marginBottom: 28,
+    },
+    sectionTitle: {
+      fontSize: 18,
+      fontWeight: '800',
+      color: '#0F172A',
+      marginBottom: 12,
+    },
 
-  buttonContent: {
-    flex: 1,
-  },
+    // INFORMAÇÕES
+    infoCard: {
+      backgroundColor: '#FFFFFF',
+      borderRadius: 18,
+      paddingHorizontal: 20,
+      borderWidth: 1,
+      borderColor: '#E2E8F0',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 3 },
+      shadowOpacity: 0.04,
+      shadowRadius: 8,
+      elevation: 2,
+    },
+    infoRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 18,
+    },
+    infoIcon: {
+      width: 42,
+      height: 42,
+      borderRadius: 12,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#EFF6FF',
+      marginRight: 14,
+    },
+    infoIconText: {
+      fontSize: 18,
+      color: '#0284C7',
+    },
+    infoContent: {
+      flex: 1,
+    },
+    label: {
+      fontSize: 12,
+      fontWeight: '700',
+      color: '#94A3B8',
+      marginBottom: 4,
+      textTransform: 'uppercase',
+      letterSpacing: 0.5,
+    },
+    value: {
+      fontSize: 16,
+      color: '#0F172A',
+      fontWeight: '600',
+    },
+    divider: {
+      height: 1,
+      backgroundColor: '#E2E8F0',
+    },
 
-  homeButtonTitle: {
-    fontSize: 16,
-    fontWeight: '800',
-    color: '#0F172A',
-    marginBottom: 3,
-  },
+    // AÇÕES
+    actions: {
+      gap: 12,
+    },
+    actionsDesktop: {
+      flexDirection: 'row',
+      alignItems: 'stretch',
+    },
+    homeButton: {
+      flex: 1,
+      minHeight: 82,
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: '#FFFFFF',
+      borderRadius: 16,
+      paddingHorizontal: 18,
+      borderWidth: 1,
+      borderColor: '#E2E8F0',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.03,
+      shadowRadius: 6,
+      elevation: 1,
+    },
+    buttonPressed: {
+      opacity: 0.75,
+      transform: [{ scale: 0.99 }],
+    },
+    homeIcon: {
+      width: 46,
+      height: 46,
+      borderRadius: 13,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#E0F2FE',
+      marginRight: 14,
+    },
+    homeIconText: {
+      fontSize: 26,
+      color: '#0284C7',
+      fontWeight: '700',
+    },
+    buttonContent: {
+      flex: 1,
+    },
+    homeButtonTitle: {
+      fontSize: 16,
+      fontWeight: '800',
+      color: '#0F172A',
+      marginBottom: 3,
+    },
+    homeButtonDescription: {
+      fontSize: 13,
+      color: '#64748B',
+    },
+    arrow: {
+      fontSize: 24,
+      color: '#0284C7',
+      fontWeight: '600',
+      marginLeft: 10,
+    },
+    logoutWrapper: {
+      flex: 1,
+      justifyContent: 'center',
+    },
+    logoutButton: {
+      width: '100%',
+      minHeight: 82,
+      backgroundColor: '#FEE2E2',
+      borderColor: '#FECACA',
+      color: '#991B1B',
+    },
 
-  homeButtonDescription: {
-    fontSize: 13,
-    color: '#64748B',
-  },
+    // FOOTER
+    footer: {
+      alignItems: 'center',
+      marginTop: 12,
+      paddingTop: 24,
+      borderTopWidth: 1,
+      borderTopColor: '#E2E8F0',
+    },
+    footerText: {
+      fontSize: 14,
+      fontWeight: '800',
+      color: '#0284C7',
+      marginBottom: 4,
+    },
+    footerDescription: {
+      fontSize: 12,
+      color: '#94A3B8',
+      textAlign: 'center',
+    },
+  }),
 
-  arrow: {
-    fontSize: 24,
-    color: '#0284C7',
-    fontWeight: '600',
-    marginLeft: 10,
-  },
+  dark: StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#0B1120',
+    },
+    contentContainer: {
+      flexGrow: 1,
+      paddingVertical: 40,
+      paddingHorizontal: 20,
+    },
+    content: {
+      width: '100%',
+      maxWidth: 700,
+      alignSelf: 'center',
+    },
+    contentDesktop: {
+      maxWidth: 850,
+    },
 
-  logoutWrapper: {
-    flex: 1,
-    justifyContent: 'center',
-  },
+    // HEADER
+    header: {
+      marginBottom: 28,
+    },
+    eyebrow: {
+      fontSize: 13,
+      fontWeight: '800',
+      letterSpacing: 1.5,
+      color: '#38BDF8',
+      marginBottom: 8,
+    },
+    title: {
+      fontSize: 32,
+      fontWeight: '800',
+      color: '#F1F5F9',
+      marginBottom: 8,
+    },
+    subtitle: {
+      fontSize: 16,
+      lineHeight: 24,
+      color: '#94A3B8',
+      maxWidth: 600,
+    },
 
-  logoutButton: {
-    width: '100%',
-    minHeight: 82,
-    backgroundColor: '#FEE2E2',
-    borderColor: '#FECACA',
-    color: '#991B1B',
-  },
+    // PERFIL
+    profileCard: {
+      backgroundColor: '#1E293B',
+      borderRadius: 20,
+      padding: 24,
+      marginBottom: 28,
+      borderWidth: 1,
+      borderColor: '#334155',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 6 },
+      shadowOpacity: 0.25,
+      shadowRadius: 12,
+      elevation: 4,
+    },
+    profileHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    avatar: {
+      width: 82,
+      height: 82,
+      borderRadius: 41,
+      borderWidth: 3,
+      borderColor: '#38BDF8',
+    },
+    avatarPlaceholder: {
+      width: 82,
+      height: 82,
+      borderRadius: 41,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#0369A1',
+    },
+    avatarPlaceholderText: {
+      color: '#FFFFFF',
+      fontSize: 32,
+      fontWeight: '800',
+    },
+    profileInfo: {
+      flex: 1,
+      marginLeft: 18,
+    },
+    greeting: {
+      color: '#94A3B8',
+      fontSize: 14,
+      marginBottom: 2,
+    },
+    profileName: {
+      color: '#F8FAFC',
+      fontSize: 24,
+      fontWeight: '800',
+      marginBottom: 4,
+    },
+    profileEmail: {
+      color: '#CBD5E1',
+      fontSize: 14,
+    },
 
-  /* =========================
-     FOOTER
-  ========================= */
+    // SEÇÕES
+    section: {
+      marginBottom: 28,
+    },
+    sectionTitle: {
+      fontSize: 18,
+      fontWeight: '800',
+      color: '#F1F5F9',
+      marginBottom: 12,
+    },
 
-  footer: {
-    alignItems: 'center',
-    marginTop: 12,
-    paddingTop: 24,
-    borderTopWidth: 1,
-    borderTopColor: '#E2E8F0',
-  },
+    // INFORMAÇÕES
+    infoCard: {
+      backgroundColor: '#111827',
+      borderRadius: 18,
+      paddingHorizontal: 20,
+      borderWidth: 1,
+      borderColor: '#334155',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 3 },
+      shadowOpacity: 0.2,
+      shadowRadius: 8,
+      elevation: 2,
+    },
+    infoRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 18,
+    },
+    infoIcon: {
+      width: 42,
+      height: 42,
+      borderRadius: 12,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#172554',
+      marginRight: 14,
+    },
+    infoIconText: {
+      fontSize: 18,
+      color: '#38BDF8',
+    },
+    infoContent: {
+      flex: 1,
+    },
+    label: {
+      fontSize: 12,
+      fontWeight: '700',
+      color: '#94A3B8',
+      marginBottom: 4,
+      textTransform: 'uppercase',
+      letterSpacing: 0.5,
+    },
+    value: {
+      fontSize: 16,
+      color: '#F1F5F9',
+      fontWeight: '600',
+    },
+    divider: {
+      height: 1,
+      backgroundColor: '#334155',
+    },
 
-  footerText: {
-    fontSize: 14,
-    fontWeight: '800',
-    color: '#0284C7',
-    marginBottom: 4,
-  },
+    // AÇÕES
+    actions: {
+      gap: 12,
+    },
+    actionsDesktop: {
+      flexDirection: 'row',
+      alignItems: 'stretch',
+    },
+    homeButton: {
+      flex: 1,
+      minHeight: 82,
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: '#111827',
+      borderRadius: 16,
+      paddingHorizontal: 18,
+      borderWidth: 1,
+      borderColor: '#334155',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 6,
+      elevation: 1,
+    },
+    buttonPressed: {
+      opacity: 0.75,
+      transform: [{ scale: 0.99 }],
+    },
+    homeIcon: {
+      width: 46,
+      height: 46,
+      borderRadius: 13,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#172554',
+      marginRight: 14,
+    },
+    homeIconText: {
+      fontSize: 26,
+      color: '#38BDF8',
+      fontWeight: '700',
+    },
+    buttonContent: {
+      flex: 1,
+    },
+    homeButtonTitle: {
+      fontSize: 16,
+      fontWeight: '800',
+      color: '#F1F5F9',
+      marginBottom: 3,
+    },
+    homeButtonDescription: {
+      fontSize: 13,
+      color: '#94A3B8',
+    },
+    arrow: {
+      fontSize: 24,
+      color: '#38BDF8',
+      fontWeight: '600',
+      marginLeft: 10,
+    },
+    logoutWrapper: {
+      flex: 1,
+      justifyContent: 'center',
+    },
+    logoutButton: {
+      width: '100%',
+      minHeight: 82,
+      backgroundColor: '#450A0A',
+      borderColor: '#7F1D1D',
+      color: '#FCA5A5',
+    },
 
-  footerDescription: {
-    fontSize: 12,
-    color: '#94A3B8',
-    textAlign: 'center',
-  },
-});
+    // FOOTER
+    footer: {
+      alignItems: 'center',
+      marginTop: 12,
+      paddingTop: 24,
+      borderTopWidth: 1,
+      borderTopColor: '#334155',
+    },
+    footerText: {
+      fontSize: 14,
+      fontWeight: '800',
+      color: '#38BDF8',
+      marginBottom: 4,
+    },
+    footerDescription: {
+      fontSize: 12,
+      color: '#94A3B8',
+      textAlign: 'center',
+    },
+  }),
+};

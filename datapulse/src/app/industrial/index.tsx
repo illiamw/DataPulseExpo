@@ -6,9 +6,16 @@ import {
   StyleSheet,
   ScrollView,
   useWindowDimensions,
+  useColorScheme
 } from "react-native";
 
 export default function AboutDataPulse() {
+  const colorScheme = useColorScheme();
+  
+    const styles =
+      colorScheme === 'dark'
+        ? themeStyles.dark
+        : themeStyles.light;
   const { width } = useWindowDimensions();
 
   const isDesktop = width >= 768;
@@ -575,6 +582,12 @@ function Section({
   title: string;
   children: React.ReactNode;
 }) {
+  const colorScheme = useColorScheme();
+  
+    const styles =
+      colorScheme === 'dark'
+        ? themeStyles.dark
+        : themeStyles.light;
   return (
     <View style={styles.section}>
       <Text style={styles.eyebrow}>
@@ -600,6 +613,12 @@ function ImagePlaceholder({
   description: string;
   height: number;
 }) {
+  const colorScheme = useColorScheme();
+  
+    const styles =
+      colorScheme === 'dark'
+        ? themeStyles.dark
+        : themeStyles.light;
   return (
     <View
       style={[
@@ -632,6 +651,12 @@ function InfoCard({
   title: string;
   description: string;
 }) {
+  const colorScheme = useColorScheme();
+  
+    const styles =
+      colorScheme === 'dark'
+        ? themeStyles.dark
+        : themeStyles.light;
   return (
     <View style={styles.infoCard}>
       <View style={styles.infoIcon}>
@@ -657,6 +682,12 @@ function Feature({
 }: {
   text: string;
 }) {
+  const colorScheme = useColorScheme();
+  
+    const styles =
+      colorScheme === 'dark'
+        ? themeStyles.dark
+        : themeStyles.light;
   return (
     <View style={styles.feature}>
       <Text style={styles.featureCheck}>
@@ -680,6 +711,12 @@ function Medallion({
   subtitle: string;
   description: string;
 }) {
+  const colorScheme = useColorScheme();
+  
+    const styles =
+      colorScheme === 'dark'
+        ? themeStyles.dark
+        : themeStyles.light;
   return (
     <View style={styles.medallion}>
       <Text style={styles.medallionTitle}>
@@ -703,6 +740,12 @@ function ModelCard({
 }: {
   name: string;
 }) {
+  const colorScheme = useColorScheme();
+  
+    const styles =
+      colorScheme === 'dark'
+        ? themeStyles.dark
+        : themeStyles.light;
   return (
     <View style={styles.modelCard}>
       <View style={styles.modelDot} />
@@ -720,6 +763,12 @@ function FlowStep({
 }: {
   title: string;
 }) {
+  const colorScheme = useColorScheme();
+  
+    const styles =
+      colorScheme === 'dark'
+        ? themeStyles.dark
+        : themeStyles.light;
   return (
     <View style={styles.flowStep}>
       <Text style={styles.flowStepText}>
@@ -737,6 +786,12 @@ function ArchitectureBox({
   title: string;
   description: string;
 }) {
+  const colorScheme = useColorScheme();
+  
+    const styles =
+      colorScheme === 'dark'
+        ? themeStyles.dark
+        : themeStyles.light;
   return (
     <View style={styles.architectureBox}>
       <Text style={styles.architectureTitle}>
@@ -758,6 +813,12 @@ function PipelineStep({
   number: string;
   title: string;
 }) {
+  const colorScheme = useColorScheme();
+  
+    const styles =
+      colorScheme === 'dark'
+        ? themeStyles.dark
+        : themeStyles.light;
   return (
     <View style={styles.pipelineStep}>
       <Text style={styles.pipelineNumber}>
@@ -772,551 +833,1079 @@ function PipelineStep({
 }
 
 
-/* ========================================================= */
-/* STYLES                                                     */
-/* ========================================================= */
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#F8FAFC"
-  },
-
-  content: {
-    paddingBottom: 80
-    
-  },
-  /* HERO */
-  heroImage: {
-    width: "100%",
-    maxWidth: 1100,
-    alignSelf: "center",
-    marginTop: 40,
-  },
-
-  hero: {
-    backgroundColor: "#0F172A",
-    paddingVertical: 80,
-    paddingHorizontal: 24,
-    paddingTop: 120
-  },
-
-  heroContent: {
-    width: "100%",
-    maxWidth: 1100,
-    alignSelf: "center",
-  },
-
-  badge: {
-    color: "#38BDF8",
-    fontSize: 13,
-    fontWeight: "700",
-    letterSpacing: 1,
-    marginBottom: 20,
-    textTransform: "uppercase",
-  },
-
-  heroTitle: {
-    color: "#FFFFFF",
-    fontSize: 58,
-    fontWeight: "900",
-    marginBottom: 16,
-  },
-
-  heroSubtitle: {
-    color: "#E2E8F0",
-    fontSize: 28,
-    lineHeight: 38,
-    fontWeight: "600",
-    maxWidth: 800,
-  },
-
-  heroDescription: {
-    color: "#94A3B8",
-    fontSize: 17,
-    lineHeight: 28,
-    marginTop: 24,
-    maxWidth: 760,
-  },
-
-  /* SECTIONS */
-
-  section: {
-    width: "100%",
-    maxWidth: 1100,
-    alignSelf: "center",
-    paddingHorizontal: 24,
-    paddingTop: 80,
-  },
-
-  eyebrow: {
-    color: "#0284C7",
-    fontSize: 13,
-    fontWeight: "800",
-    letterSpacing: 1.5,
-    marginBottom: 10,
-  },
-
-  sectionTitle: {
-    color: "#0F172A",
-    fontSize: 34,
-    lineHeight: 42,
-    fontWeight: "800",
-    marginBottom: 24,
-  },
-
-  paragraph: {
-    color: "#475569",
-    fontSize: 16,
-    lineHeight: 28,
-    marginBottom: 18,
-    maxWidth: 900,
-  },
-
-  /* IMAGE */
-
-  imagePlaceholder: {
-    width: "100%",
-    maxWidth: 1100,
-    alignSelf: "center",
-    marginTop: 40,
-    paddingHorizontal: 24,
-    borderRadius: 18,
-    borderWidth: 2,
-    borderStyle: "dashed",
-    borderColor: "#CBD5E1",
-    backgroundColor: "#F1F5F9",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  imageIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: "#E2E8F0",
-    color: "#64748B",
-    textAlign: "center",
-    lineHeight: 46,
-    fontSize: 30,
-    marginBottom: 14,
-  },
-
-  imageTitle: {
-    color: "#334155",
-    fontSize: 18,
-    fontWeight: "700",
-    textAlign: "center",
-  },
-
-  imageDescription: {
-    color: "#64748B",
-    fontSize: 14,
-    textAlign: "center",
-    marginTop: 8,
-    maxWidth: 600,
-  },
-
-  /* CARDS */
-
-  cardsRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 16,
-    marginTop: 24,
-  },
-
-  infoCard: {
-    flex: 1,
-    minWidth: 250,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 16,
-    padding: 24,
-    borderWidth: 1,
-    borderColor: "#E2E8F0",
-  },
-
-  infoIcon: {
-    width: 44,
-    height: 44,
-    borderRadius: 12,
-    backgroundColor: "#E0F2FE",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 18,
-  },
-
-  infoIconText: {
-    color: "#0284C7",
-    fontSize: 11,
-    fontWeight: "900"
-  },
-
-  infoTitle: {
-    color: "#0F172A",
-    fontSize: 19,
-    fontWeight: "800",
-    marginBottom: 8
-  },
-
-  infoDescription: {
-    color: "#64748B",
-    fontSize: 14,
-    lineHeight: 22,
-  },
-
-  /* FEATURES */
-
-  featureGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 12,
-    marginTop: 20,
-  },
-
-  feature: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: "48%",
-    minWidth: 280,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 10,
-    padding: 14,
-    borderWidth: 1,
-    borderColor: "#E2E8F0",
-  },
-
-  featureCheck: {
-    color: "#0284C7",
-    fontSize: 17,
-    fontWeight: "800",
-    marginRight: 10,
-  },
-
-  featureText: {
-    flex: 1,
-    color: "#475569",
-    fontSize: 14,
-  },
-
-  /* MEDALLION */
-
-  medallionContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 14,
-    marginTop: 30,
-  },
-
-  medallion: {
-    flex: 1,
-    minWidth: 230,
-    maxWidth: 330,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 18,
-    padding: 24,
-    borderWidth: 1,
-    borderColor: "#E2E8F0",
-  },
-
-  medallionTitle: {
-    color: "#0284C7",
-    fontSize: 28,
-    fontWeight: "900",
-  },
-
-  medallionSubtitle: {
-    color: "#0F172A",
-    fontSize: 16,
-    fontWeight: "700",
-    marginTop: 4,
-  },
-
-  medallionDescription: {
-    color: "#64748B",
-    fontSize: 14,
-    lineHeight: 21,
-    marginTop: 12,
-  },
-
-  arrow: {
-    color: "#94A3B8",
-    fontSize: 28,
-    fontWeight: "300",
-  },
-
-  /* OBJECTIVES */
-
-  objectiveCard: {
-    flexDirection: "row",
-    backgroundColor: "#FFFFFF",
-    borderRadius: 16,
-    padding: 22,
-    marginBottom: 14,
-    borderWidth: 1,
-    borderColor: "#E2E8F0",
-  },
-
-  objectiveNumber: {
-    width: 46,
-    height: 46,
-    borderRadius: 23,
-    backgroundColor: "#E0F2FE",
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 18,
-  },
-
-  objectiveNumberText: {
-    color: "#0284C7",
-    fontWeight: "900",
-  },
-
-  objectiveContent: {
-    flex: 1,
-  },
-
-  objectiveTitle: {
-    color: "#0F172A",
-    fontSize: 18,
-    fontWeight: "800",
-  },
-
-  objectiveText: {
-    color: "#64748B",
-    fontSize: 14,
-    lineHeight: 22,
-    marginTop: 6,
-  },
-
-  /* MODELS */
-
-  modelGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 12,
-  },
-
-  modelCard: {
-    width: "23%",
-    minWidth: 200,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 12,
-    padding: 18,
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#E2E8F0",
-  },
-
-  modelDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: "#0284C7",
-    marginRight: 10,
-  },
-
-  modelName: {
-    color: "#334155",
-    fontWeight: "700",
-    fontSize: 14,
-  },
-
-  /* FLOW */
-
-  flowContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 10,
-    marginTop: 30,
-  },
-
-  flowStep: {
-    backgroundColor: "#0F172A",
-    borderRadius: 10,
-    paddingVertical: 14,
-    paddingHorizontal: 20,
-  },
-
-  flowStepText: {
-    color: "#FFFFFF",
-    fontWeight: "700",
-  },
-
-  flowArrow: {
-    color: "#94A3B8",
-    fontSize: 24,
-  },
-
-  /* ARCHITECTURE */
-
-  architecture: {
-    alignItems: "center",
-    marginTop: 30,
-  },
-
-  architectureBox: {
-    width: "100%",
-    maxWidth: 500,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 14,
-    padding: 22,
-    borderWidth: 1,
-    borderColor: "#E2E8F0",
-    alignItems: "center",
-  },
-
-  architectureTitle: {
-    color: "#0F172A",
-    fontSize: 19,
-    fontWeight: "800",
-  },
-
-  architectureDescription: {
-    color: "#64748B",
-    marginTop: 5,
-  },
-
-  archArrow: {
-    color: "#0284C7",
-    fontSize: 26,
-    marginVertical: 8,
-  },
-
-  /* PIPELINE */
-
-  pipeline: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 12,
-    marginTop: 30,
-  },
-
-  pipelineStep: {
-    width: 240,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 14,
-    padding: 18,
-    borderWidth: 1,
-    borderColor: "#E2E8F0",
-  },
-
-  pipelineNumber: {
-    color: "#0284C7",
-    fontSize: 12,
-    fontWeight: "900",
-  },
-
-  pipelineTitle: {
-    color: "#334155",
-    fontSize: 15,
-    fontWeight: "700",
-    marginTop: 7,
-  },
-
-  codeDescription: {
-    color: "#64748B",
-    fontSize: 15,
-    lineHeight: 25,
-    marginTop: 24,
-  },
-
-  /* DEPLOY */
-
-  deployFlow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 10,
-    marginTop: 30,
-  },
-
-  /* TWO COLUMN */
-
-  twoColumn: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 18,
-  },
-
-  cicdCard: {
-    flex: 1,
-    minWidth: 280,
-    backgroundColor: "#0F172A",
-    borderRadius: 18,
-    padding: 28,
-    alignItems: "center",
-  },
-
-  cicdTitle: {
-    color: "#FFFFFF",
-    fontSize: 24,
-    fontWeight: "800",
-    marginBottom: 20,
-  },
-
-  cicdText: {
-    color: "#CBD5E1",
-    fontSize: 15,
-    marginVertical: 5,
-  },
-
-  /* FINAL */
-
-  finalSection: {
-    marginTop: 100,
-    backgroundColor: "#0F172A",
-    paddingVertical: 80,
-    paddingHorizontal: 24,
-    alignItems: "center",
-  },
-
-  finalEyebrow: {
-    color: "#38BDF8",
-    fontSize: 13,
-    fontWeight: "900",
-    letterSpacing: 2,
-  },
-
-  finalTitle: {
-    color: "#FFFFFF",
-    fontSize: 38,
-    fontWeight: "900",
-    textAlign: "center",
-    marginTop: 12,
-  },
-
-  finalText: {
-    color: "#94A3B8",
-    fontSize: 16,
-    lineHeight: 26,
-    textAlign: "center",
-    maxWidth: 750,
-    marginTop: 20,
-  },
-
-  finalFlow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 12,
-    marginTop: 36,
-  },
-
-  finalFlowText: {
-    color: "#FFFFFF",
-    fontWeight: "700",
-  },
-
-  finalArrow: {
-    color: "#38BDF8",
-    fontSize: 20,
-  },
-});
+
+// =============================================================
+// THEMES
+// =============================================================
+
+const themeStyles = {
+  // ===========================================================
+  // LIGHT THEME
+  // ===========================================================
+  light: StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: "#F8FAFC",
+    },
+
+    content: {
+      paddingBottom: 80,
+    },
+
+    /* HERO */
+    heroImage: {
+      width: "100%",
+      maxWidth: 1100,
+      alignSelf: "center",
+      marginTop: 40,
+    },
+
+    hero: {
+      backgroundColor: "#0F172A",
+      paddingVertical: 80,
+      paddingHorizontal: 24,
+      paddingTop: 120,
+    },
+
+    heroContent: {
+      width: "100%",
+      maxWidth: 1100,
+      alignSelf: "center",
+    },
+
+    badge: {
+      color: "#38BDF8",
+      fontSize: 13,
+      fontWeight: "700",
+      letterSpacing: 1,
+      marginBottom: 20,
+      textTransform: "uppercase",
+    },
+
+    heroTitle: {
+      color: "#FFFFFF",
+      fontSize: 58,
+      fontWeight: "900",
+      marginBottom: 16,
+    },
+
+    heroSubtitle: {
+      color: "#E2E8F0",
+      fontSize: 28,
+      lineHeight: 38,
+      fontWeight: "600",
+      maxWidth: 800,
+    },
+
+    heroDescription: {
+      color: "#94A3B8",
+      fontSize: 17,
+      lineHeight: 28,
+      marginTop: 24,
+      maxWidth: 760,
+    },
+
+    /* SECTIONS */
+    section: {
+      width: "100%",
+      maxWidth: 1100,
+      alignSelf: "center",
+      paddingHorizontal: 24,
+      paddingTop: 80,
+    },
+
+    eyebrow: {
+      color: "#0284C7",
+      fontSize: 13,
+      fontWeight: "800",
+      letterSpacing: 1.5,
+      marginBottom: 10,
+    },
+
+    sectionTitle: {
+      color: "#0F172A",
+      fontSize: 34,
+      lineHeight: 42,
+      fontWeight: "800",
+      marginBottom: 24,
+    },
+
+    paragraph: {
+      color: "#475569",
+      fontSize: 16,
+      lineHeight: 28,
+      marginBottom: 18,
+      maxWidth: 900,
+    },
+
+    /* IMAGE */
+    imagePlaceholder: {
+      width: "100%",
+      maxWidth: 1100,
+      alignSelf: "center",
+      marginTop: 40,
+      paddingHorizontal: 24,
+      borderRadius: 18,
+      borderWidth: 2,
+      borderStyle: "dashed",
+      borderColor: "#CBD5E1",
+      backgroundColor: "#F1F5F9",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+
+    imageIcon: {
+      width: 48,
+      height: 48,
+      borderRadius: 24,
+      backgroundColor: "#E2E8F0",
+      color: "#64748B",
+      textAlign: "center",
+      lineHeight: 46,
+      fontSize: 30,
+      marginBottom: 14,
+    },
+
+    imageTitle: {
+      color: "#334155",
+      fontSize: 18,
+      fontWeight: "700",
+      textAlign: "center",
+    },
+
+    imageDescription: {
+      color: "#64748B",
+      fontSize: 14,
+      textAlign: "center",
+      marginTop: 8,
+      maxWidth: 600,
+    },
+
+    /* CARDS */
+    cardsRow: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: 16,
+      marginTop: 24,
+    },
+
+    infoCard: {
+      flex: 1,
+      minWidth: 250,
+      backgroundColor: "#FFFFFF",
+      borderRadius: 16,
+      padding: 24,
+      borderWidth: 1,
+      borderColor: "#E2E8F0",
+    },
+
+    infoIcon: {
+      width: 44,
+      height: 44,
+      borderRadius: 12,
+      backgroundColor: "#E0F2FE",
+      alignItems: "center",
+      justifyContent: "center",
+      marginBottom: 18,
+    },
+
+    infoIconText: {
+      color: "#0284C7",
+      fontSize: 11,
+      fontWeight: "900",
+    },
+
+    infoTitle: {
+      color: "#0F172A",
+      fontSize: 19,
+      fontWeight: "800",
+      marginBottom: 8,
+    },
+
+    infoDescription: {
+      color: "#64748B",
+      fontSize: 14,
+      lineHeight: 22,
+    },
+
+    /* FEATURES */
+    featureGrid: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: 12,
+      marginTop: 20,
+    },
+
+    feature: {
+      flexDirection: "row",
+      alignItems: "center",
+      width: "48%",
+      minWidth: 280,
+      backgroundColor: "#FFFFFF",
+      borderRadius: 10,
+      padding: 14,
+      borderWidth: 1,
+      borderColor: "#E2E8F0",
+    },
+
+    featureCheck: {
+      color: "#0284C7",
+      fontSize: 17,
+      fontWeight: "800",
+      marginRight: 10,
+    },
+
+    featureText: {
+      flex: 1,
+      color: "#475569",
+      fontSize: 14,
+    },
+
+    /* MEDALLION */
+    medallionContainer: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 14,
+      marginTop: 30,
+    },
+
+    medallion: {
+      flex: 1,
+      minWidth: 230,
+      maxWidth: 330,
+      backgroundColor: "#FFFFFF",
+      borderRadius: 18,
+      padding: 24,
+      borderWidth: 1,
+      borderColor: "#E2E8F0",
+    },
+
+    medallionTitle: {
+      color: "#0284C7",
+      fontSize: 28,
+      fontWeight: "900",
+    },
+
+    medallionSubtitle: {
+      color: "#0F172A",
+      fontSize: 16,
+      fontWeight: "700",
+      marginTop: 4,
+    },
+
+    medallionDescription: {
+      color: "#64748B",
+      fontSize: 14,
+      lineHeight: 21,
+      marginTop: 12,
+    },
+
+    arrow: {
+      color: "#94A3B8",
+      fontSize: 28,
+      fontWeight: "300",
+    },
+
+    /* OBJECTIVES */
+    objectiveCard: {
+      flexDirection: "row",
+      backgroundColor: "#FFFFFF",
+      borderRadius: 16,
+      padding: 22,
+      marginBottom: 14,
+      borderWidth: 1,
+      borderColor: "#E2E8F0",
+    },
+
+    objectiveNumber: {
+      width: 46,
+      height: 46,
+      borderRadius: 23,
+      backgroundColor: "#E0F2FE",
+      alignItems: "center",
+      justifyContent: "center",
+      marginRight: 18,
+    },
+
+    objectiveNumberText: {
+      color: "#0284C7",
+      fontWeight: "900",
+    },
+
+    objectiveContent: {
+      flex: 1,
+    },
+
+    objectiveTitle: {
+      color: "#0F172A",
+      fontSize: 18,
+      fontWeight: "800",
+    },
+
+    objectiveText: {
+      color: "#64748B",
+      fontSize: 14,
+      lineHeight: 22,
+      marginTop: 6,
+    },
+
+    /* MODELS */
+    modelGrid: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: 12,
+    },
+
+    modelCard: {
+      width: "23%",
+      minWidth: 200,
+      backgroundColor: "#FFFFFF",
+      borderRadius: 12,
+      padding: 18,
+      flexDirection: "row",
+      alignItems: "center",
+      borderWidth: 1,
+      borderColor: "#E2E8F0",
+    },
+
+    modelDot: {
+      width: 8,
+      height: 8,
+      borderRadius: 4,
+      backgroundColor: "#0284C7",
+      marginRight: 10,
+    },
+
+    modelName: {
+      color: "#334155",
+      fontWeight: "700",
+      fontSize: 14,
+    },
+
+    /* FLOW */
+    flowContainer: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 10,
+      marginTop: 30,
+    },
+
+    flowStep: {
+      backgroundColor: "#0F172A",
+      borderRadius: 10,
+      paddingVertical: 14,
+      paddingHorizontal: 20,
+    },
+
+    flowStepText: {
+      color: "#FFFFFF",
+      fontWeight: "700",
+    },
+
+    flowArrow: {
+      color: "#94A3B8",
+      fontSize: 24,
+    },
+
+    /* ARCHITECTURE */
+    architecture: {
+      alignItems: "center",
+      marginTop: 30,
+    },
+
+    architectureBox: {
+      width: "100%",
+      maxWidth: 500,
+      backgroundColor: "#FFFFFF",
+      borderRadius: 14,
+      padding: 22,
+      borderWidth: 1,
+      borderColor: "#E2E8F0",
+      alignItems: "center",
+    },
+
+    architectureTitle: {
+      color: "#0F172A",
+      fontSize: 19,
+      fontWeight: "800",
+    },
+
+    architectureDescription: {
+      color: "#64748B",
+      marginTop: 5,
+    },
+
+    archArrow: {
+      color: "#0284C7",
+      fontSize: 26,
+      marginVertical: 8,
+    },
+
+    /* PIPELINE */
+    pipeline: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: 12,
+      marginTop: 30,
+    },
+
+    pipelineStep: {
+      width: 240,
+      backgroundColor: "#FFFFFF",
+      borderRadius: 14,
+      padding: 18,
+      borderWidth: 1,
+      borderColor: "#E2E8F0",
+    },
+
+    pipelineNumber: {
+      color: "#0284C7",
+      fontSize: 12,
+      fontWeight: "900",
+    },
+
+    pipelineTitle: {
+      color: "#334155",
+      fontSize: 15,
+      fontWeight: "700",
+      marginTop: 7,
+    },
+
+    codeDescription: {
+      color: "#64748B",
+      fontSize: 15,
+      lineHeight: 25,
+      marginTop: 24,
+    },
+
+    /* DEPLOY */
+    deployFlow: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: 10,
+      marginTop: 30,
+    },
+
+    /* TWO COLUMN */
+    twoColumn: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: 18,
+    },
+
+    cicdCard: {
+      flex: 1,
+      minWidth: 280,
+      backgroundColor: "#0F172A",
+      borderRadius: 18,
+      padding: 28,
+      alignItems: "center",
+    },
+
+    cicdTitle: {
+      color: "#FFFFFF",
+      fontSize: 24,
+      fontWeight: "800",
+      marginBottom: 20,
+    },
+
+    cicdText: {
+      color: "#CBD5E1",
+      fontSize: 15,
+      marginVertical: 5,
+    },
+
+    /* FINAL */
+    finalSection: {
+      marginTop: 100,
+      backgroundColor: "#0F172A",
+      paddingVertical: 80,
+      paddingHorizontal: 24,
+      alignItems: "center",
+    },
+
+    finalEyebrow: {
+      color: "#38BDF8",
+      fontSize: 13,
+      fontWeight: "900",
+      letterSpacing: 2,
+    },
+
+    finalTitle: {
+      color: "#FFFFFF",
+      fontSize: 38,
+      fontWeight: "900",
+      textAlign: "center",
+      marginTop: 12,
+    },
+
+    finalText: {
+      color: "#94A3B8",
+      fontSize: 16,
+      lineHeight: 26,
+      textAlign: "center",
+      maxWidth: 750,
+      marginTop: 20,
+    },
+
+    finalFlow: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: 12,
+      marginTop: 36,
+    },
+
+    finalFlowText: {
+      color: "#FFFFFF",
+      fontWeight: "700",
+    },
+
+    finalArrow: {
+      color: "#38BDF8",
+      fontSize: 20,
+    },
+  }),
+
+  // ===========================================================
+  // DARK THEME
+  // ===========================================================
+  dark: StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: "#0B1120",
+    },
+
+    content: {
+      paddingBottom: 80,
+    },
+
+    /* HERO */
+    heroImage: {
+      width: "100%",
+      maxWidth: 1100,
+      alignSelf: "center",
+      marginTop: 40,
+    },
+
+    hero: {
+      backgroundColor: "#111827",
+      paddingVertical: 80,
+      paddingHorizontal: 24,
+      paddingTop: 120,
+    },
+
+    heroContent: {
+      width: "100%",
+      maxWidth: 1100,
+      alignSelf: "center",
+    },
+
+    badge: {
+      color: "#38BDF8",
+      fontSize: 13,
+      fontWeight: "700",
+      letterSpacing: 1,
+      marginBottom: 20,
+      textTransform: "uppercase",
+    },
+
+    heroTitle: {
+      color: "#F9FAFB",
+      fontSize: 58,
+      fontWeight: "900",
+      marginBottom: 16,
+    },
+
+    heroSubtitle: {
+      color: "#E2E8F0",
+      fontSize: 28,
+      lineHeight: 38,
+      fontWeight: "600",
+      maxWidth: 800,
+    },
+
+    heroDescription: {
+      color: "#9CA3AF",
+      fontSize: 17,
+      lineHeight: 28,
+      marginTop: 24,
+      maxWidth: 760,
+    },
+
+    /* SECTIONS */
+    section: {
+      width: "100%",
+      maxWidth: 1100,
+      alignSelf: "center",
+      paddingHorizontal: 24,
+      paddingTop: 80,
+    },
+
+    eyebrow: {
+      color: "#38BDF8",
+      fontSize: 13,
+      fontWeight: "800",
+      letterSpacing: 1.5,
+      marginBottom: 10,
+    },
+
+    sectionTitle: {
+      color: "#F9FAFB",
+      fontSize: 34,
+      lineHeight: 42,
+      fontWeight: "800",
+      marginBottom: 24,
+    },
+
+    paragraph: {
+      color: "#CBD5E1",
+      fontSize: 16,
+      lineHeight: 28,
+      marginBottom: 18,
+      maxWidth: 900,
+    },
+
+    /* IMAGE */
+    imagePlaceholder: {
+      width: "100%",
+      maxWidth: 1100,
+      alignSelf: "center",
+      marginTop: 40,
+      paddingHorizontal: 24,
+      borderRadius: 18,
+      borderWidth: 2,
+      borderStyle: "dashed",
+      borderColor: "#475569",
+      backgroundColor: "#1E293B",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+
+    imageIcon: {
+      width: 48,
+      height: 48,
+      borderRadius: 24,
+      backgroundColor: "#334155",
+      color: "#CBD5E1",
+      textAlign: "center",
+      lineHeight: 46,
+      fontSize: 30,
+      marginBottom: 14,
+    },
+
+    imageTitle: {
+      color: "#F1F5F9",
+      fontSize: 18,
+      fontWeight: "700",
+      textAlign: "center",
+    },
+
+    imageDescription: {
+      color: "#94A3B8",
+      fontSize: 14,
+      textAlign: "center",
+      marginTop: 8,
+      maxWidth: 600,
+    },
+
+    /* CARDS */
+    cardsRow: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: 16,
+      marginTop: 24,
+    },
+
+    infoCard: {
+      flex: 1,
+      minWidth: 250,
+      backgroundColor: "#1E293B",
+      borderRadius: 16,
+      padding: 24,
+      borderWidth: 1,
+      borderColor: "#334155",
+    },
+
+    infoIcon: {
+      width: 44,
+      height: 44,
+      borderRadius: 12,
+      backgroundColor: "#164E63",
+      alignItems: "center",
+      justifyContent: "center",
+      marginBottom: 18,
+    },
+
+    infoIconText: {
+      color: "#7DD3FC",
+      fontSize: 11,
+      fontWeight: "900",
+    },
+
+    infoTitle: {
+      color: "#F9FAFB",
+      fontSize: 19,
+      fontWeight: "800",
+      marginBottom: 8,
+    },
+
+    infoDescription: {
+      color: "#CBD5E1",
+      fontSize: 14,
+      lineHeight: 22,
+    },
+
+    /* FEATURES */
+    featureGrid: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: 12,
+      marginTop: 20,
+    },
+
+    feature: {
+      flexDirection: "row",
+      alignItems: "center",
+      width: "48%",
+      minWidth: 280,
+      backgroundColor: "#1E293B",
+      borderRadius: 10,
+      padding: 14,
+      borderWidth: 1,
+      borderColor: "#334155",
+    },
+
+    featureCheck: {
+      color: "#38BDF8",
+      fontSize: 17,
+      fontWeight: "800",
+      marginRight: 10,
+    },
+
+    featureText: {
+      flex: 1,
+      color: "#CBD5E1",
+      fontSize: 14,
+    },
+
+    /* MEDALLION */
+    medallionContainer: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 14,
+      marginTop: 30,
+    },
+
+    medallion: {
+      flex: 1,
+      minWidth: 230,
+      maxWidth: 330,
+      backgroundColor: "#1E293B",
+      borderRadius: 18,
+      padding: 24,
+      borderWidth: 1,
+      borderColor: "#334155",
+    },
+
+    medallionTitle: {
+      color: "#38BDF8",
+      fontSize: 28,
+      fontWeight: "900",
+    },
+
+    medallionSubtitle: {
+      color: "#F1F5F9",
+      fontSize: 16,
+      fontWeight: "700",
+      marginTop: 4,
+    },
+
+    medallionDescription: {
+      color: "#CBD5E1",
+      fontSize: 14,
+      lineHeight: 21,
+      marginTop: 12,
+    },
+
+    arrow: {
+      color: "#64748B",
+      fontSize: 28,
+      fontWeight: "300",
+    },
+
+    /* OBJECTIVES */
+    objectiveCard: {
+      flexDirection: "row",
+      backgroundColor: "#1E293B",
+      borderRadius: 16,
+      padding: 22,
+      marginBottom: 14,
+      borderWidth: 1,
+      borderColor: "#334155",
+    },
+
+    objectiveNumber: {
+      width: 46,
+      height: 46,
+      borderRadius: 23,
+      backgroundColor: "#164E63",
+      alignItems: "center",
+      justifyContent: "center",
+      marginRight: 18,
+    },
+
+    objectiveNumberText: {
+      color: "#7DD3FC",
+      fontWeight: "900",
+    },
+
+    objectiveContent: {
+      flex: 1,
+    },
+
+    objectiveTitle: {
+      color: "#F9FAFB",
+      fontSize: 18,
+      fontWeight: "800",
+    },
+
+    objectiveText: {
+      color: "#CBD5E1",
+      fontSize: 14,
+      lineHeight: 22,
+      marginTop: 6,
+    },
+
+    /* MODELS */
+    modelGrid: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: 12,
+    },
+
+    modelCard: {
+      width: "23%",
+      minWidth: 200,
+      backgroundColor: "#1E293B",
+      borderRadius: 12,
+      padding: 18,
+      flexDirection: "row",
+      alignItems: "center",
+      borderWidth: 1,
+      borderColor: "#334155",
+    },
+
+    modelDot: {
+      width: 8,
+      height: 8,
+      borderRadius: 4,
+      backgroundColor: "#38BDF8",
+      marginRight: 10,
+    },
+
+    modelName: {
+      color: "#E2E8F0",
+      fontWeight: "700",
+      fontSize: 14,
+    },
+
+    /* FLOW */
+    flowContainer: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 10,
+      marginTop: 30,
+    },
+
+    flowStep: {
+      backgroundColor: "#164E63",
+      borderRadius: 10,
+      paddingVertical: 14,
+      paddingHorizontal: 20,
+    },
+
+    flowStepText: {
+      color: "#F0F9FF",
+      fontWeight: "700",
+    },
+
+    flowArrow: {
+      color: "#64748B",
+      fontSize: 24,
+    },
+
+    /* ARCHITECTURE */
+    architecture: {
+      alignItems: "center",
+      marginTop: 30,
+    },
+
+    architectureBox: {
+      width: "100%",
+      maxWidth: 500,
+      backgroundColor: "#1E293B",
+      borderRadius: 14,
+      padding: 22,
+      borderWidth: 1,
+      borderColor: "#334155",
+      alignItems: "center",
+    },
+
+    architectureTitle: {
+      color: "#F9FAFB",
+      fontSize: 19,
+      fontWeight: "800",
+    },
+
+    architectureDescription: {
+      color: "#CBD5E1",
+      marginTop: 5,
+    },
+
+    archArrow: {
+      color: "#38BDF8",
+      fontSize: 26,
+      marginVertical: 8,
+    },
+
+    /* PIPELINE */
+    pipeline: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: 12,
+      marginTop: 30,
+    },
+
+    pipelineStep: {
+      width: 240,
+      backgroundColor: "#1E293B",
+      borderRadius: 14,
+      padding: 18,
+      borderWidth: 1,
+      borderColor: "#334155",
+    },
+
+    pipelineNumber: {
+      color: "#38BDF8",
+      fontSize: 12,
+      fontWeight: "900",
+    },
+
+    pipelineTitle: {
+      color: "#E2E8F0",
+      fontSize: 15,
+      fontWeight: "700",
+      marginTop: 7,
+    },
+
+    codeDescription: {
+      color: "#CBD5E1",
+      fontSize: 15,
+      lineHeight: 25,
+      marginTop: 24,
+    },
+
+    /* DEPLOY */
+    deployFlow: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: 10,
+      marginTop: 30,
+    },
+
+    /* TWO COLUMN */
+    twoColumn: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: 18,
+    },
+
+    cicdCard: {
+      flex: 1,
+      minWidth: 280,
+      backgroundColor: "#111827",
+      borderRadius: 18,
+      padding: 28,
+      alignItems: "center",
+    },
+
+    cicdTitle: {
+      color: "#F9FAFB",
+      fontSize: 24,
+      fontWeight: "800",
+      marginBottom: 20,
+    },
+
+    cicdText: {
+      color: "#CBD5E1",
+      fontSize: 15,
+      marginVertical: 5,
+    },
+
+    /* FINAL */
+    finalSection: {
+      marginTop: 100,
+      backgroundColor: "#111827",
+      paddingVertical: 80,
+      paddingHorizontal: 24,
+      alignItems: "center",
+    },
+
+    finalEyebrow: {
+      color: "#38BDF8",
+      fontSize: 13,
+      fontWeight: "900",
+      letterSpacing: 2,
+    },
+
+    finalTitle: {
+      color: "#F9FAFB",
+      fontSize: 38,
+      fontWeight: "900",
+      textAlign: "center",
+      marginTop: 12,
+    },
+
+    finalText: {
+      color: "#9CA3AF",
+      fontSize: 16,
+      lineHeight: 26,
+      textAlign: "center",
+      maxWidth: 750,
+      marginTop: 20,
+    },
+
+    finalFlow: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: 12,
+      marginTop: 36,
+    },
+
+    finalFlowText: {
+      color: "#F9FAFB",
+      fontWeight: "700",
+    },
+
+    finalArrow: {
+      color: "#38BDF8",
+      fontSize: 20,
+    },
+  }),
+};

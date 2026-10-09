@@ -6,6 +6,7 @@ import {
   Pressable,
   StyleSheet,
   View,
+  useColorScheme
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -26,6 +27,8 @@ if (!publishableKey) {
 // ============================================================
 
 export default function RootLayout() {
+
+
   return (
     <ClerkProvider
       publishableKey={publishableKey}
@@ -42,6 +45,15 @@ export default function RootLayout() {
 // ============================================================
 
 function RootContent() {
+
+  const colorScheme = useColorScheme();
+
+  const styles =
+    colorScheme === 'dark'
+      ? themeStyles.dark
+      : themeStyles.light;
+
+      
   const [configExpanded, setConfigExpanded] =
     useState(false);
 
@@ -133,58 +145,90 @@ function RootContent() {
 // STYLES
 // ============================================================
 
-const styles = StyleSheet.create({
-
-  container: {
-    flex: 1,
-  },
-
-  content: {
-    flex: 1,
-  },
-
-  floatingButton: {
-    position: 'absolute',
-
-    top: 50,
-    right: 20,
-
-    width: 56,
-    height: 56,
-
-    borderRadius: 28,
-
-    backgroundColor: '#222',
-
-    justifyContent: 'center',
-    alignItems: 'center',
-
-    elevation: 10,
-
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
+const themeStyles = {
+  light: StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#ffffff',
     },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
 
-    zIndex: 100,
-  },
+    content: {
+      flex: 1,
+      backgroundColor: '#ffffff',
+    },
 
-  configContainer: {
-    position: 'absolute',
+    floatingButton: {
+      position: 'absolute',
+      top: 50,
+      right: 20,
+      width: 56,
+      height: 56,
+      borderRadius: 28,
+      backgroundColor: '#222222',
+      justifyContent: 'center',
+      alignItems: 'center',
+      elevation: 10,
+      shadowColor: '#000000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.3,
+      shadowRadius: 5,
+      zIndex: 100,
+    },
 
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
+    configContainer: {
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      backgroundColor: '#f8fafc',
+      zIndex: 50,
+      padding: 20,
+    },
+  }),
 
-    backgroundColor: '#f8fafc',
+  dark: StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#0f172a',
+    },
 
-    zIndex: 50,
+    content: {
+      flex: 1,
+      backgroundColor: '#0f172a',
+    },
 
-    padding: 20,
-  },
+    floatingButton: {
+      position: 'absolute',
+      top: 50,
+      right: 20,
+      width: 56,
+      height: 56,
+      borderRadius: 28,
+      backgroundColor: '#334155',
+      justifyContent: 'center',
+      alignItems: 'center',
+      elevation: 10,
+      shadowColor: '#000000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.5,
+      shadowRadius: 5,
+      borderWidth: 1,
+      borderColor: '#475569',
+      zIndex: 100,
+    },
 
-});
+    configContainer: {
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      backgroundColor: '#111827',
+      zIndex: 50,
+      padding: 20,
+      borderTopWidth: 1,
+      borderTopColor: '#334155',
+    },
+  }),
+};

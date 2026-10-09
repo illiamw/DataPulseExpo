@@ -7,6 +7,7 @@ import {
   View,
   Image,
   useWindowDimensions,
+  useColorScheme
 } from 'react-native';
 
 import { useAuth, useSignUp } from '@clerk/expo';
@@ -17,6 +18,12 @@ import TextInputCustom from '@/components/ui/TextInputCustom';
 import ButtonCustom from '@/components/ui/ButtonCustom';
 
 export default function SignUpScreen() {
+  const colorScheme = useColorScheme();
+
+  const styles =
+    colorScheme === 'dark'
+      ? themeStyles.dark
+      : themeStyles.light;
   // =========================================================
   // CLERK
   // =========================================================
@@ -553,60 +560,141 @@ export default function SignUpScreen() {
 }
 
 // =============================================================
-// STYLES
+// THEMES
 // =============================================================
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-    padding: 20,
-    gap: 12,
-    justifyContent: 'center',
-  },
+const themeStyles = {
+  // ===========================================================
+  // LIGHT THEME
+  // ===========================================================
+  light: StyleSheet.create({
 
-  containerLarge: {
-    width: '100%',
-    maxWidth: 700,
-    alignSelf: 'center',
-  },
+    container: {
+      flex: 1,
+      width: '100%',
+      padding: 20,
+      gap: 12,
+      justifyContent: 'center',
+      backgroundColor: '#FFFFFF',
+    },
 
-  image: {
-    width: 150,
-    height: 150,
-    alignSelf: 'center',
-    marginBottom: 10,
-  },
+    containerLarge: {
+      width: '100%',
+      maxWidth: 700,
+      alignSelf: 'center',
+    },
 
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    textAlign: 'center',
-    marginBottom: 4,
-  },
+    image: {
+      width: 150,
+      height: 150,
+      alignSelf: 'center',
+      marginBottom: 10,
+    },
 
-  subtitle: {
-    textAlign: 'center',
-    marginBottom: 10,
-  },
+    title: {
+      fontSize: 24,
+      fontWeight: '700',
+      textAlign: 'center',
+      marginBottom: 4,
+      color: '#1F2937',
+    },
 
-  email: {
-    textAlign: 'center',
-    fontWeight: '600',
-    marginBottom: 10,
-  },
+    subtitle: {
+      textAlign: 'center',
+      marginBottom: 10,
+      color: '#6B7280',
+    },
 
-  loginText: {
-    textAlign: 'center',
-    marginTop: 10,
-  },
+    email: {
+      textAlign: 'center',
+      fontWeight: '600',
+      marginBottom: 10,
+      color: '#1F2937',
+    },
 
-  loginLink: {
-    fontWeight: '700',
-  },
+    loginText: {
+      textAlign: 'center',
+      marginTop: 10,
+      color: '#6B7280',
+    },
 
-  text: {
-    alignSelf: 'center',
-    marginTop: 10,
-  },
-});
+    loginLink: {
+      fontWeight: '700',
+      color: '#2563EB',
+    },
+
+    text: {
+      alignSelf: 'center',
+      marginTop: 10,
+      color: '#374151',
+    },
+
+  }),
+
+  // ===========================================================
+  // DARK THEME
+  // ===========================================================
+  dark: StyleSheet.create({
+
+    container: {
+      flex: 1,
+      width: '100%',
+      padding: 20,
+      gap: 12,
+      justifyContent: 'center',
+      backgroundColor: '#111827',
+    },
+
+    containerLarge: {
+      width: '100%',
+      maxWidth: 700,
+      alignSelf: 'center',
+    },
+
+    image: {
+      width: 150,
+      height: 150,
+      alignSelf: 'center',
+      marginBottom: 10,
+    },
+
+    title: {
+      fontSize: 24,
+      fontWeight: '700',
+      textAlign: 'center',
+      marginBottom: 4,
+      color: '#F9FAFB',
+    },
+
+    subtitle: {
+      textAlign: 'center',
+      marginBottom: 10,
+      color: '#9CA3AF',
+    },
+
+    email: {
+      textAlign: 'center',
+      fontWeight: '600',
+      marginBottom: 10,
+      color: '#F9FAFB',
+    },
+
+    loginText: {
+      textAlign: 'center',
+      marginTop: 10,
+      color: '#9CA3AF',
+    },
+
+    loginLink: {
+      fontWeight: '700',
+      color: '#60A5FA',
+    },
+
+    text: {
+      alignSelf: 'center',
+      marginTop: 10,
+      color: '#E5E7EB',
+    },
+
+  }),
+};

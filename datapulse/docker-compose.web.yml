@@ -8,6 +8,6 @@ services:
     container_name: datapulse-web
 
     ports:
-      - "127.0.0.1:3000:80"
+      - "0.0.0.0:3000:80"
 
     restart: unless-stopped

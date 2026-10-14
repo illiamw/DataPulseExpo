@@ -30,10 +30,10 @@ interface RenderInputOptions {
 }
 
 const URL_MODELS =
-  'http://163.176.161.159:8000/models';
+  'https://api.falw.top/models';
 
 const URL_PREDICT =
-  'http://163.176.161.159:8000/predict';
+  'https://api.falw.top/predict';
 
 interface Model {
   model_id: string;

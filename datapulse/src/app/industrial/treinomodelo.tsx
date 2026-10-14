@@ -15,7 +15,7 @@ import {
 import TextInputCustom from '@/components/ui/TextInputCustom';
 import ButtonCustom from '@/components/ui/ButtonCustom';
 
-const URL_FAST_API = 'http://163.176.161.159:8000/experiment';
+const URL_FAST_API = 'https://api.falw.top/experiment';
 
 type ModelName =
   | 'GaussianNB'

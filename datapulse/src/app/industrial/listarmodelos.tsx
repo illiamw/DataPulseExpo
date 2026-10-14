@@ -14,8 +14,8 @@ import {
 
 import ButtonCustom from '@/components/ui/ButtonCustom';
 
-const API_URL = 'http://163.176.161.159:8000/models';
-const MLFLOW_URL = 'http://163.176.161.159:5000/#/experiments';
+const API_URL = 'https://api.falw.top/models';
+const MLFLOW_URL = 'https://mlflow.falw.top/#/experiments';
 
 interface Model {
   model_id: string;

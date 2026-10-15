@@ -11,11 +11,11 @@ import {
 
 export default function AboutDataPulse() {
   const colorScheme = useColorScheme();
-  
-    const styles =
-      colorScheme === 'dark'
-        ? themeStyles.dark
-        : themeStyles.light;
+
+  const styles =
+    colorScheme === 'dark'
+      ? themeStyles.dark
+      : themeStyles.light;
   const { width } = useWindowDimensions();
 
   const isDesktop = width >= 768;
@@ -32,7 +32,7 @@ export default function AboutDataPulse() {
 
       <View style={styles.hero}>
         <View style={styles.heroContent}>
-          <Text style={styles.badge}>MLOps • Data Engineering • Machine Learning 
+          <Text style={styles.badge}>MLOps • Data Engineering • Machine Learning
           </Text>
 
           <Text style={styles.heroTitle}>
@@ -56,10 +56,13 @@ export default function AboutDataPulse() {
       {/* IMAGEM HERO */}
       {/* ===================================================== */}
 
-      
+
       <Image
         source={require('@/assets/images/about1.png')}
-        style={styles.heroImage}
+        style={[
+          styles.heroImage,
+          { display: isDesktop ? 'flex' : 'none' },
+        ]}
         resizeMode="contain"
       />
 
@@ -138,7 +141,10 @@ export default function AboutDataPulse() {
 
       <Image
         source={require('@/assets/images/about2.png')}
-        style={styles.heroImage}
+        style={[
+          styles.heroImage,
+          { display: isDesktop ? 'flex' : 'none' },
+        ]}
         resizeMode="contain"
       />
 
@@ -183,7 +189,10 @@ export default function AboutDataPulse() {
 
       <Image
         source={require('@/assets/images/about3.png')}
-        style={styles.heroImage}
+        style={[
+          styles.heroImage,
+          { display: isDesktop ? 'flex' : 'none' },
+        ]}
         resizeMode="contain"
       />
 
@@ -264,7 +273,10 @@ export default function AboutDataPulse() {
 
       <Image
         source={require('@/assets/images/about4.png')}
-        style={styles.heroImage}
+        style={[
+          styles.heroImage,
+          { display: isDesktop ? 'flex' : 'none' },
+        ]}
         resizeMode="contain"
       />
 
@@ -343,7 +355,10 @@ export default function AboutDataPulse() {
 
       <Image
         source={require('@/assets/images/about1.png')}
-        style={styles.heroImage}
+        style={[
+          styles.heroImage,
+          { display: isDesktop ? 'flex' : 'none' },
+        ]}
         resizeMode="contain"
       />
 
@@ -380,7 +395,10 @@ export default function AboutDataPulse() {
 
       <Image
         source={require('@/assets/images/about5.png')}
-        style={styles.heroImage}
+        style={[
+          styles.heroImage,
+          { display: isDesktop ? 'flex' : 'none' },
+        ]}
         resizeMode="contain"
       />
 
@@ -449,7 +467,10 @@ export default function AboutDataPulse() {
 
       <Image
         source={require('@/assets/images/about6.png')}
-        style={styles.heroImage}
+        style={[
+          styles.heroImage,
+          { display: isDesktop ? 'flex' : 'none' },
+        ]}
         resizeMode="contain"
       />
 
@@ -583,11 +604,11 @@ function Section({
   children: React.ReactNode;
 }) {
   const colorScheme = useColorScheme();
-  
-    const styles =
-      colorScheme === 'dark'
-        ? themeStyles.dark
-        : themeStyles.light;
+
+  const styles =
+    colorScheme === 'dark'
+      ? themeStyles.dark
+      : themeStyles.light;
   return (
     <View style={styles.section}>
       <Text style={styles.eyebrow}>
@@ -614,11 +635,11 @@ function ImagePlaceholder({
   height: number;
 }) {
   const colorScheme = useColorScheme();
-  
-    const styles =
-      colorScheme === 'dark'
-        ? themeStyles.dark
-        : themeStyles.light;
+
+  const styles =
+    colorScheme === 'dark'
+      ? themeStyles.dark
+      : themeStyles.light;
   return (
     <View
       style={[
@@ -652,11 +673,11 @@ function InfoCard({
   description: string;
 }) {
   const colorScheme = useColorScheme();
-  
-    const styles =
-      colorScheme === 'dark'
-        ? themeStyles.dark
-        : themeStyles.light;
+
+  const styles =
+    colorScheme === 'dark'
+      ? themeStyles.dark
+      : themeStyles.light;
   return (
     <View style={styles.infoCard}>
       <View style={styles.infoIcon}>
@@ -683,11 +704,11 @@ function Feature({
   text: string;
 }) {
   const colorScheme = useColorScheme();
-  
-    const styles =
-      colorScheme === 'dark'
-        ? themeStyles.dark
-        : themeStyles.light;
+
+  const styles =
+    colorScheme === 'dark'
+      ? themeStyles.dark
+      : themeStyles.light;
   return (
     <View style={styles.feature}>
       <Text style={styles.featureCheck}>
@@ -712,11 +733,11 @@ function Medallion({
   description: string;
 }) {
   const colorScheme = useColorScheme();
-  
-    const styles =
-      colorScheme === 'dark'
-        ? themeStyles.dark
-        : themeStyles.light;
+
+  const styles =
+    colorScheme === 'dark'
+      ? themeStyles.dark
+      : themeStyles.light;
   return (
     <View style={styles.medallion}>
       <Text style={styles.medallionTitle}>
@@ -741,11 +762,11 @@ function ModelCard({
   name: string;
 }) {
   const colorScheme = useColorScheme();
-  
-    const styles =
-      colorScheme === 'dark'
-        ? themeStyles.dark
-        : themeStyles.light;
+
+  const styles =
+    colorScheme === 'dark'
+      ? themeStyles.dark
+      : themeStyles.light;
   return (
     <View style={styles.modelCard}>
       <View style={styles.modelDot} />
@@ -764,11 +785,11 @@ function FlowStep({
   title: string;
 }) {
   const colorScheme = useColorScheme();
-  
-    const styles =
-      colorScheme === 'dark'
-        ? themeStyles.dark
-        : themeStyles.light;
+
+  const styles =
+    colorScheme === 'dark'
+      ? themeStyles.dark
+      : themeStyles.light;
   return (
     <View style={styles.flowStep}>
       <Text style={styles.flowStepText}>
@@ -787,11 +808,11 @@ function ArchitectureBox({
   description: string;
 }) {
   const colorScheme = useColorScheme();
-  
-    const styles =
-      colorScheme === 'dark'
-        ? themeStyles.dark
-        : themeStyles.light;
+
+  const styles =
+    colorScheme === 'dark'
+      ? themeStyles.dark
+      : themeStyles.light;
   return (
     <View style={styles.architectureBox}>
       <Text style={styles.architectureTitle}>
@@ -814,11 +835,11 @@ function PipelineStep({
   title: string;
 }) {
   const colorScheme = useColorScheme();
-  
-    const styles =
-      colorScheme === 'dark'
-        ? themeStyles.dark
-        : themeStyles.light;
+
+  const styles =
+    colorScheme === 'dark'
+      ? themeStyles.dark
+      : themeStyles.light;
   return (
     <View style={styles.pipelineStep}>
       <Text style={styles.pipelineNumber}>

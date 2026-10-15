@@ -8,7 +8,8 @@ import {
   View,
   Image,
   useWindowDimensions,
-  useColorScheme
+  useColorScheme,
+  ScrollView
 } from 'react-native';
 
 import { useAuth, useSignIn, useSSO } from '@clerk/expo';
@@ -321,7 +322,7 @@ export default function MainScreen() {
   if (isVerifying) {
 
     return (
-      <View
+      <ScrollView
         style={[
           styles.container,
           isLargeScreen && styles.containerLarge,
@@ -361,7 +362,7 @@ export default function MainScreen() {
           onPress={}
         /> */}
 
-      </View>
+      </ScrollView>
     );
   }
 

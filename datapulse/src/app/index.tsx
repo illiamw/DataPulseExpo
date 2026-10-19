@@ -286,6 +286,10 @@ export default function Industrial() {
 
         </View>
 
+        <Text style={styles.finalEyebrow}>
+          V 1.0.2
+        </Text>
+
       </View>
 
     </ScrollView>

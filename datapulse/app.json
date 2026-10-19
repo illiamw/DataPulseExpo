@@ -2,7 +2,7 @@
   "expo": {
     "name": "datapulse",
     "slug": "datapulse",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "datapulse",
@@ -23,7 +23,7 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "package": "com.williamferreira.datapulse",
-      "versionCode": 2,
+      "versionCode": 3,
       "predictiveBackGestureEnabled": false,
       "usesCleartextTraffic": true,
       "userInterfaceStyle": "light"

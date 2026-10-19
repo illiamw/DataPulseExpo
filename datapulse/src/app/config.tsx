@@ -10,7 +10,7 @@ import {
   useColorScheme
 } from 'react-native';
 
-import { useClerk, useUser } from '@clerk/expo';
+// import { useClerk, useUser } from '@clerk/expo';
 import { useRouter } from 'expo-router';
 import ButtonSocialCustom from '@/components/ui/ButtonSocialCustom';
 

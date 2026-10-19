@@ -7,10 +7,11 @@ import {
   View,
   Image,
   useWindowDimensions,
-  useColorScheme
+  useColorScheme,
+  Platform
 } from 'react-native';
 
-import { useAuth, useSignUp } from '@clerk/expo';
+// import { useAuth, useSignUp } from '@clerk/expo';
 
 import { useRouter } from 'expo-router';
 
@@ -28,7 +29,16 @@ export default function SignUpScreen() {
   // CLERK
   // =========================================================
 
-  const { isLoaded, isSignedIn } = useAuth();
+  const isWeb = Platform.OS === 'web';
+  
+  const auth = useAuth();
+
+
+  // Provisório
+  const isLoaded =  false;
+  const isSignedIn = true;
+
+
   const { signUp } = useSignUp();
 
   // =========================================================
@@ -190,9 +200,9 @@ export default function SignUpScreen() {
   // =========================================================
 
   const handleSignUp = async () => {
-    if (!isLoaded) {
-      return;
-    }
+    // if (!isLoaded) {
+    //   return;
+    // }
 
     const emailValidation = validateEmail(emailAddress);
     const usernameValidation = validateUsername(username);
@@ -277,9 +287,9 @@ export default function SignUpScreen() {
 
     setIsLoading(true);
 
-    if (!isLoaded) {
-      return;
-    }
+    // if (!isLoaded) {
+    //   return;
+    // }
 
     if (!code) {
         setIsLoading(false);
@@ -356,9 +366,9 @@ export default function SignUpScreen() {
   // LOADING CLERK
   // =========================================================
 
-  if (!isLoaded) {
-    return null;
-  }
+  // if (!isLoaded) {
+  //   return null;
+  // }
 
   // =========================================================
   // USUÁRIO JÁ AUTENTICADO
@@ -552,7 +562,7 @@ export default function SignUpScreen() {
 
       {/* CLERK CAPTCHA - WEB */}
 
-      <View nativeID="clerk-captcha" />
+      {/* <View nativeID="clerk-captcha" /> */}
 
 
     </View>

@@ -3,7 +3,6 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "dependencies": {
-    "@clerk/expo": "^4.6.8",
     "@clerk/expo-google-signin": "^1.0.4",
     "@expo/metro-runtime": "~57.0.16",
     "@expo/ui": "~57.0.19",

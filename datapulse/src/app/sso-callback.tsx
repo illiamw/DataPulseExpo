@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'expo-router';
-import { useSSO } from '@clerk/expo';
+// import { useSSO } from '@clerk/expo';
 
 export default function SSOCallback() {
   const router = useRouter();

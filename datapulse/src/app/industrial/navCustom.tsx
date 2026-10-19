@@ -103,6 +103,11 @@ export default function NavCustom({
     router.push('/industrial/treinomodelo');
   };
 
+  const handleInicio = () => {
+    closeNavigation();
+    router.push('/');
+  };
+
   return (
     <View style={styles.container}>
       <View
@@ -158,6 +163,13 @@ export default function NavCustom({
             title="Treino de modelos"
             description="Execute experimentos e treine novos modelos."
             onPress={handleTreinarModels}
+          />
+
+          <NavigationItem
+            icon="⌂"
+            title="Explorar outras soluções"
+            description="Descubra mais opções de aplicações."
+            onPress={handleInicio}
           />
         </View>
 

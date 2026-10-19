@@ -1,25 +1,26 @@
 import { ClerkProvider, useAuth } from '@clerk/expo';
-import { tokenCache } from '@clerk/expo/token-cache';
+// import { tokenCache } from '@clerk/expo/token-cache';
 import { Slot } from 'expo-router';
 import { useEffect, useState } from 'react';
 import {
   Pressable,
   StyleSheet,
   View,
-  useColorScheme
+  useColorScheme,
+  Platform
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import Config from '@/app/config';
 
-const publishableKey =
-  process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
+// const publishableKey =
+//   process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
-if (!publishableKey) {
-  throw new Error(
-    'Add your Clerk Publishable Key to the .env file'
-  );
-}
+// if (!publishableKey) {
+//   throw new Error(
+//     'Add your Clerk Publishable Key to the .env file'
+//   );
+// }
 
 
 // ============================================================
@@ -30,12 +31,12 @@ export default function RootLayout() {
 
 
   return (
-    <ClerkProvider
-      publishableKey={publishableKey}
-      tokenCache={tokenCache}
-    >
+    // <ClerkProvider
+    //   publishableKey={publishableKey}
+    //   tokenCache={tokenCache}
+    // >
       <RootContent />
-    </ClerkProvider>
+    // </ClerkProvider>
   );
 }
 
@@ -53,40 +54,46 @@ function RootContent() {
       ? themeStyles.dark
       : themeStyles.light;
 
-      
+
   const [configExpanded, setConfigExpanded] =
     useState(false);
 
-  const {
-    isLoaded,
-    isSignedIn,
-  } = useAuth();
+
+  const isWeb = Platform.OS === 'web';
+
+  // const auth = useAuth();
+
+  // // Provisório
+  // const isLoaded = false;
+  // const isSignedIn = true;
+
+
 
 
   // ==========================================================
   // FECHA CONFIG AO FAZER LOGOUT
   // ==========================================================
 
-  useEffect(() => {
-    if (!isSignedIn) {
-      setConfigExpanded(false);
-    }
-  }, [isSignedIn]);
+  // useEffect(() => {
+  //   if (!isSignedIn) {
+  //     setConfigExpanded(false);
+  //   }
+  // }, [isSignedIn]);
 
 
   // ==========================================================
   // AGUARDA O CLERK CARREGAR
   // ==========================================================
 
-  if (!isLoaded) {
-    return null;
-  }
+  // if (!isLoaded) {
+  //   return null;
+  // }
 
 
   // ==========================================================
   // RENDER
   // ==========================================================
-
+  
   return (
     <View style={styles.container}>
 
@@ -94,7 +101,7 @@ function RootContent() {
       {/* CONFIG */}
       {/* ================================================== */}
 
-      {isSignedIn && configExpanded && (
+      {configExpanded && (
         <View style={styles.configContainer}>
           <Config
             configExpanded={configExpanded}
@@ -117,7 +124,7 @@ function RootContent() {
       {/* BOTÃO FLUTUANTE */}
       {/* ================================================== */}
 
-      {isSignedIn && (
+      {/* {isSignedIn && !isWeb&& (
         <Pressable
           style={styles.floatingButton}
           onPress={() =>
@@ -134,7 +141,7 @@ function RootContent() {
             color="#fff"
           />
         </Pressable>
-      )}
+      )} */}
 
     </View>
   );

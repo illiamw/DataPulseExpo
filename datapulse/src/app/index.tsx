@@ -1,29 +1,19 @@
-import React, { useState } from 'react';
+import React from "react";
 
 import {
-  Alert,
-  Platform,
   StyleSheet,
   Text,
   View,
-  Image,
+  Pressable,
+  ScrollView,
   useWindowDimensions,
-  useColorScheme,
-  ScrollView
-} from 'react-native';
+  useColorScheme
+} from "react-native";
 
-import { useAuth, useSignIn, useSSO } from '@clerk/expo';
-
-import { useSignInWithGoogle } from '@clerk/expo/google';
-
-import { useRouter } from 'expo-router';
-
-import TextInputCustom from '@/components/ui/TextInputCustom';
-import ButtonCustom from '@/components/ui/ButtonCustom';
-import ButtonSocialCustom from '@/components/ui/ButtonSocialCustom';
+import { useRouter } from "expo-router";
 
 
-export default function MainScreen() {
+export default function Industrial() {
   const colorScheme = useColorScheme();
 
   const styles =
@@ -31,670 +21,820 @@ export default function MainScreen() {
       ? themeStyles.dark
       : themeStyles.light;
 
-  // =========================================================
-  // CLERK
-  // =========================================================
-
-  const { isLoaded, isSignedIn } = useAuth();
-  const { signIn } = useSignIn();
-
-  // =========================================================
-  // ROUTER
-  // =========================================================
-
   const router = useRouter();
-
-  // =========================================================
-  // RESPONSIVIDADE
-  // =========================================================
 
   const { width } = useWindowDimensions();
 
-  const isLargeScreen = width >= 768;
+  const isDesktop = width >= 768;
 
-  // =========================================================
-  // GOOGLE AUTH
-  // =========================================================
 
-  const {
-    startGoogleAuthenticationFlow,
-  } = useSignInWithGoogle();
-
-  const {
-    startSSOFlow,
-  } = useSSO();
-
-  // =========================================================
-  // FORM
-  // =========================================================
-
-  const [emailAddress, setEmailAddress] = useState('');
-  const [emailError, setEmailError] = useState('');
-
-  const [password, setPassword] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-
-  // =========================================================
-  // VERIFICATION
-  // =========================================================
-
-  const [code, setCode] = useState('');
-  const [isVerifying, setIsVerifying] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  // =========================================================
-  // EMAIL VALIDATION
-  // =========================================================
-
-  const validateEmail = (email: string) => {
-
-    if (email.length === 0) {
-      return 'Email é obrigatório';
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(email)) {
-      return 'Digite um email válido';
-    }
-
-    return '';
+  const handleIndustrial = () => {
+    router.push("/industrial");
   };
 
-  // =========================================================
-  // PASSWORD VALIDATION
-  // =========================================================
-
-  const validatePassword = (password: string) => {
-
-    if (password.length === 0) {
-      return '';
-    }
-
-    if (password.length < 15) {
-      return 'A senha deve ter pelo menos 15 caracteres';
-    }
-
-    if (!/[A-Z]/.test(password)) {
-      return 'A senha deve conter uma letra maiúscula';
-    }
-
-    if (!/[a-z]/.test(password)) {
-      return 'A senha deve conter uma letra minúscula';
-    }
-
-    if (!/[0-9]/.test(password)) {
-      return 'A senha deve conter um número';
-    }
-
-    if (!/[!@#$%^&*(),.?":{}|<>_\-]/.test(password)) {
-      return 'A senha deve conter um caractere especial';
-    }
-
-    return '';
-  };
-
-  // =========================================================
-  // INPUT HANDLERS
-  // =========================================================
-
-  const handleEmailChange = (text: string) => {
-
-    setEmailAddress(text);
-
-    setEmailError(
-      validateEmail(text)
-    );
-  };
-
-  const handlePasswordChange = (text: string) => {
-
-    setPassword(text);
-
-    setPasswordError(
-      validatePassword(text)
-    );
-  };
-
-  // =========================================================
-  // EMAIL SIGN UP
-  // =========================================================
-
-  const handleSignIn = async () => {
-    if (!isLoaded) return;
-
-    try {
-      setIsLoading(true);
-
-      const { error } = await signIn.password({
-        identifier: emailAddress.trim(),
-        password,
-      });
-
-      if (error) {
-        Alert.alert(
-          'Erro',
-          error.message || 'E-mail ou senha inválidos.'
-        );
-
-        return;
-      }
-
-      // Finaliza o processo de autenticação
-      const { error: finalizeError } = await signIn.finalize();
-
-      if (finalizeError) {
-        Alert.alert(
-          'Erro',
-          finalizeError.message ||
-          'Não foi possível finalizar o login.'
-        );
-
-        return;
-      }
-
-      // Somente depois de finalizar a sessão
-      router.replace('/home');
-
-    } catch (error: any) {
-      console.error('Erro no login:', error);
-
-      Alert.alert(
-        'Erro',
-        error?.errors?.[0]?.message ||
-        error?.message ||
-        'Não foi possível realizar o login.'
-      );
-
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  // =========================================================
-  // GOOGLE LOGIN
-  // =========================================================
-
-  const handleTest = async () => {
-    router.replace('/home');
-  }
-
-  const handleGoogleSignIn = async () => {
-    try {
-      // =======================================================
-      // WEB — OAuth via navegador
-      // =======================================================
-      if (Platform.OS === 'web') {
-        const {
-          createdSessionId,
-          setActive,
-        } = await startSSOFlow({
-          strategy: 'oauth_google',
-        });
-
-
-        if (!createdSessionId || !setActive) {
-          console.error(
-            '[Google Auth][Web] Sessão não criada.',
-            { createdSessionId: !!createdSessionId }
-          );
-
-          Alert.alert(
-            'Login não concluído',
-            'O Google não retornou uma sessão válida. Tente novamente.'
-          );
-
-          return;
-        }
-
-        await setActive({ session: createdSessionId });
-        router.replace('/home');
-        return;
-      }
-
-      // =======================================================
-      // ANDROID / IOS — Google nativo com Clerk
-      // =======================================================
-      const {
-        createdSessionId,
-        setActive,
-      } = await startGoogleAuthenticationFlow();
-
-      if (!createdSessionId || !setActive) {
-        console.error(
-          '[Google Auth][Native] Sessão não criada.',
-          { createdSessionId: !!createdSessionId }
-        );
-
-        Alert.alert(
-          'Login não concluído',
-          'Não foi possível criar sua sessão. Verifique a configuração do login Google e tente novamente.'
-        );
-
-        return;
-      }
-
-      await setActive({ session: createdSessionId });
-
-      router.replace('/home');
-
-
-    } catch (error: unknown) {
-      console.error(
-        '[Google Auth] Falha na autenticação:',
-        error
-      );
-
-
-      const message =
-        error instanceof Error
-          ? error.message
-          : 'Não foi possível entrar com o Google.';
-
-      Alert.alert('Erro no login', message);
-
-
-    }
-  };
-
-
-  // =========================================================
-  // LOADING CLERK
-  // =========================================================
-
-  if (!isLoaded) {
-    return null;
-  }
-
-  // =========================================================
-  // USUÁRIO JÁ AUTENTICADO
-  // =========================================================
-
-  if (isSignedIn) {
-    router.replace('/home');
-    return null;
-
-  }
-
-  // =========================================================
-  // EMAIL VERIFICATION
-  // =========================================================
-
-  if (isVerifying) {
-
-    return (
-      <ScrollView
-        style={[
-          styles.container,
-          isLargeScreen && styles.containerLarge,
-        ]}
-      >
-
-        <Image
-          source={require('@/assets/images/icon.png')}
-          style={styles.image}
-          resizeMode="contain"
-        />
-
-        <Text style={styles.title}>
-          Verifique seu email
-        </Text>
-
-        <Text style={styles.subtitle}>
-          Enviamos um código de verificação para:
-        </Text>
-
-        <Text style={styles.email}>
-          {emailAddress}
-        </Text>
-
-        <TextInputCustom
-          label="Código de verificação"
-          value={code}
-          placeholder="Digite o código"
-          onChangeText={setCode}
-          keyboardType="numeric"
-        />
-
-        {/* <ButtonCustom
-          title="Verificar"
-          loading={isLoading}
-          disabled={code.length === 0}
-          onPress={}
-        /> */}
-
-      </ScrollView>
-    );
-  }
-
-  // =========================================================
-  // LOGIN / SIGN UP
-  // =========================================================
-
-  const isFormInvalid =
-    emailAddress.length === 0 ||
-    password.length === 0 ||
-    !!emailError ||
-    !!passwordError;
 
   return (
-
-    <View
-      style={[
-        styles.container,
-        isLargeScreen && styles.containerLarge,
-      ]}
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.contentContainer}
+      showsVerticalScrollIndicator={false}
     >
 
-      {/* LOGO */}
+      {/* ===================================================== */}
+      {/* HERO */}
+      {/* ===================================================== */}
 
-      <Image
-        source={require('@/assets/images/icon.png')}
-        style={styles.image}
-        resizeMode="contain"
-      />
+      <View style={styles.hero}>
 
-      {/* EMAIL */}
+        <View style={styles.heroContent}>
 
-      <TextInputCustom
-        label="Email Address"
-        error={emailError}
-        autoCapitalize="none"
-        value={emailAddress}
-        placeholder="Enter email"
-        onChangeText={handleEmailChange}
-        keyboardType="email-address"
-      />
+          <Text style={styles.badge}>
+            MLOps • Data Engineering • Machine Learning • Development Mobile/Web
+          </Text>
 
-      {/* PASSWORD */}
 
-      <TextInputCustom
-        label="Password"
-        error={passwordError}
-        value={password}
-        placeholder="Enter password"
-        secureTextEntry={true}
-        onChangeText={handlePasswordChange}
-      />
+          <Text style={styles.heroTitle}>
+            DataPulse
+          </Text>
 
-      {/* EMAIL */}
 
-      <ButtonCustom
-        title="Acessar com Email"
-        loading={isLoading}
-        disabled={isFormInvalid}
-        onPress={handleSignIn}
-      />
-      <Text
-        style={styles.signupLink}
-        onPress={() => router.push('/signup')}
-      >
-        Não possui uma conta? Criar conta
-      </Text>
+          <Text style={styles.heroSubtitle}>
+            Demonstração de soluções completas de dados e Machine Learning
+            com emprego de engenharia de dados para compor uma abordagem
+            integrada.
+          </Text>
 
-      {/* SOCIAL LOGIN */}
 
-      <View style={styles.socialDivider}>
-        <View style={styles.dividerLine} />
+          <Text style={styles.heroDescription}>
+            Um projeto completo de dados e Machine Learning que integra
+            engenharia de dados, modelos preditivos, MLflow, APIs,
+            containers e CI/CD em uma única solução.
+          </Text>
 
-        <Text style={styles.dividerText}>
-          Acessar com conta Social
+        </View>
+
+      </View>
+
+
+      {/* ===================================================== */}
+      {/* APLICAÇÕES */}
+      {/* ===================================================== */}
+
+      <View style={styles.applicationsSection}>
+
+        <View style={styles.header}>
+
+          <Text style={styles.eyebrow}>
+            DATAPULSE
+          </Text>
+
+
+          <Text style={styles.sectionTitle}>
+            Aplicações
+          </Text>
+
+
+          <Text style={styles.subtitle}>
+            Explore as aplicações desenvolvidas utilizando dados,
+            Machine Learning e práticas de MLOps.
+          </Text>
+
+        </View>
+
+
+        {/* ================================================= */}
+        {/* CARDS */}
+        {/* ================================================= */}
+
+        <View
+          style={[
+            styles.cardsContainer,
+            isDesktop && styles.cardsContainerDesktop,
+          ]}
+        >
+
+          {/* =============================================== */}
+          {/* FALHA LINHA INDUSTRIAL */}
+          {/* =============================================== */}
+
+          <Pressable
+            style={({ pressed }) => [
+              styles.card,
+              pressed && styles.cardPressed,
+            ]}
+            onPress={handleIndustrial}
+          >
+
+            {/* ÍCONE */}
+
+            <View style={styles.iconContainer}>
+
+              <Text style={styles.icon}>
+                ⚙
+              </Text>
+
+            </View>
+
+
+            {/* CONTEÚDO */}
+
+            <View style={styles.cardContent}>
+
+              <View style={styles.cardHeader}>
+
+                <Text style={styles.cardTitle}>
+                  Falha Linha Industrial
+                </Text>
+
+
+                <View style={styles.statusBadge}>
+
+                  <Text style={styles.statusText}>
+                    DATA • ML • OPS
+                  </Text>
+
+                </View>
+
+              </View>
+
+
+              <Text style={styles.cardDescription}>
+                Monitoramento e predição de falhas em uma linha
+                industrial utilizando dados de sensores e modelos
+                de Machine Learning.
+              </Text>
+
+
+              <View style={styles.cardFooter}>
+
+                <Text style={styles.cardAction}>
+                  Acessar aplicação
+                </Text>
+
+
+                <Text style={styles.arrow}>
+                  →
+                </Text>
+
+              </View>
+
+            </View>
+
+          </Pressable>
+
+
+          {/* =============================================== */}
+          {/* FUTURAS APLICAÇÕES */}
+          {/* =============================================== */}
+
+          <View style={styles.comingSoonCard}>
+
+            <View style={styles.comingSoonIcon}>
+
+              <Text style={styles.comingSoonIconText}>
+                +
+              </Text>
+
+            </View>
+
+
+            <Text style={styles.comingSoonTitle}>
+              Em breve - Novas aplicações
+            </Text>
+
+
+            <Text style={styles.comingSoonText}>
+              Novos projetos e aplicações poderão ser adicionados
+              ao DataPulse.
+            </Text>
+
+          </View>
+
+        </View>
+
+      </View>
+
+
+      {/* ===================================================== */}
+      {/* FINAL */}
+      {/* ===================================================== */}
+
+      <View style={styles.finalSection}>
+
+        <Text style={styles.finalEyebrow}>
+          DATA • ML • OPS
         </Text>
 
-        <View style={styles.dividerLine} />
+
+        <Text style={styles.finalTitle}>
+          Do dado bruto à predição
+        </Text>
+
+
+        <Text style={styles.finalText}>
+          O DataPulse reúne engenharia de dados, arquitetura
+          medalhão, Machine Learning, MLflow, APIs, containers
+          e CI/CD em um fluxo único de desenvolvimento e entrega.
+        </Text>
+
+
+        <View style={styles.finalFlow}>
+
+          <Text style={styles.finalFlowText}>
+            Dados
+          </Text>
+
+
+          <Text style={styles.finalArrow}>
+            →
+          </Text>
+
+
+          <Text style={styles.finalFlowText}>
+            Pipeline
+          </Text>
+
+
+          <Text style={styles.finalArrow}>
+            →
+          </Text>
+
+
+          <Text style={styles.finalFlowText}>
+            Modelo
+          </Text>
+
+
+          <Text style={styles.finalArrow}>
+            →
+          </Text>
+
+
+          <Text style={styles.finalFlowText}>
+            API
+          </Text>
+
+
+          <Text style={styles.finalArrow}>
+            →
+          </Text>
+
+
+          <Text style={styles.finalFlowText}>
+            Aplicação
+          </Text>
+
+        </View>
+
       </View>
 
-      <View style={styles.columns}>
-
-        {/* GOOGLE */}
-
-        <View style={styles.col}>
-
-          <ButtonSocialCustom
-            onPress={handleGoogleSignIn}
-            image={require('@/assets/images/google-icon.png')}
-          />
-
-        </View>
-
-        {/* FACEBOOK */}
-
-        <View style={styles.col}>
-
-          <ButtonSocialCustom
-            disabled={true}
-            onPress={() => {
-              Alert.alert(
-                'Em breve',
-                'Login com Facebook ainda não foi configurado.'
-              );
-            }}
-            image={require('@/assets/images/facebook-icon.png')}
-          />
-
-        </View>
-
-        {/* APPLE */}
-
-        <View style={styles.col}>
-
-          <ButtonSocialCustom
-            disabled={true}
-            onPress={() => {
-              Alert.alert(
-                'Em breve',
-                'Login com Apple ainda não foi configurado.'
-              );
-            }}
-            image={require('@/assets/images/apple-icon.png')}
-          />
-
-        </View>
-
-      </View>
-
-      {/* CLERK CAPTCHA - WEB */}
-
-      <View nativeID="clerk-captcha" />
-
-      {/* VERSION */}
-
-      <Text style={styles.text}>
-        V 1.0.1
-      </Text>
-
-    </View>
+    </ScrollView>
   );
 }
 
 
-// =============================================================
-// THEMES
-// =============================================================
+// =========================================================
+// STYLES — LIGHT / DARK
+// =========================================================
 
 const themeStyles = {
-  // ===========================================================
-  // LIGHT THEME
-  // ===========================================================
   light: StyleSheet.create({
-
-    socialDivider: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      width: '100%',
-      marginVertical: 24,
-    },
-
-    dividerLine: {
-      flex: 1,
-      height: 1,
-      backgroundColor: '#D9D9D9',
-    },
-
-    dividerText: {
-      marginHorizontal: 12,
-      fontSize: 13,
-      color: '#777777',
-      textAlign: 'center',
-    },
-
+    // CONTAINER
     container: {
       flex: 1,
-      width: '100%',
-      padding: 20,
-      gap: 12,
-      justifyContent: 'center',
-      backgroundColor: '#FFFFFF',
+      backgroundColor: '#F8FAFC',
+    },
+    contentContainer: {
+      paddingBottom: 0,
     },
 
-    containerLarge: {
+    // HERO
+    hero: {
+      backgroundColor: '#0F172A',
+      paddingHorizontal: 24,
+      paddingVertical: 80,
+      paddingTop: 120,
+    },
+    heroContent: {
       width: '100%',
-      maxWidth: 700,
+      maxWidth: 1100,
       alignSelf: 'center',
     },
+    badge: {
+      color: '#38BDF8',
+      fontSize: 13,
+      fontWeight: '700',
+      letterSpacing: 1,
+      marginBottom: 20,
+      textTransform: 'uppercase',
+    },
+    heroTitle: {
+      color: '#FFFFFF',
+      fontSize: 58,
+      fontWeight: '900',
+      marginBottom: 16,
+    },
+    heroSubtitle: {
+      color: '#E2E8F0',
+      fontSize: 28,
+      lineHeight: 38,
+      fontWeight: '600',
+      maxWidth: 800,
+    },
+    heroDescription: {
+      color: '#94A3B8',
+      fontSize: 17,
+      lineHeight: 28,
+      marginTop: 24,
+      maxWidth: 760,
+    },
 
-    columns: {
+    // APPLICATIONS
+    applicationsSection: {
+      width: '100%',
+      maxWidth: 1100,
+      alignSelf: 'center',
+      paddingHorizontal: 24,
+      paddingTop: 80,
+      paddingBottom: 80,
+    },
+
+    // HEADER
+    header: {
+      width: '100%',
+      marginBottom: 40,
+    },
+    eyebrow: {
+      color: '#0284C7',
+      fontSize: 13,
+      fontWeight: '900',
+      letterSpacing: 1.5,
+      marginBottom: 8,
+    },
+    sectionTitle: {
+      color: '#0F172A',
+      fontSize: 38,
+      fontWeight: '900',
+    },
+    subtitle: {
+      color: '#64748B',
+      fontSize: 16,
+      lineHeight: 25,
+      marginTop: 10,
+      maxWidth: 650,
+    },
+
+    // CARDS
+    cardsContainer: {
+      width: '100%',
+      gap: 18,
+    },
+    cardsContainerDesktop: {
       flexDirection: 'row',
+      alignItems: 'stretch',
+    },
+
+    // INDUSTRIAL CARD
+    card: {
+      flex: 1,
+      minHeight: 240,
+      backgroundColor: '#FFFFFF',
+      borderRadius: 20,
+      padding: 26,
+      borderWidth: 1,
+      borderColor: '#E2E8F0',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.05,
+      shadowRadius: 10,
+      elevation: 2,
+    },
+    cardPressed: {
+      transform: [{ scale: 0.98 }],
+      opacity: 0.9,
+    },
+
+    // ÍCONE
+    iconContainer: {
+      width: 58,
+      height: 58,
+      borderRadius: 16,
+      backgroundColor: '#E0F2FE',
       alignItems: 'center',
       justifyContent: 'center',
-      marginVertical: 10,
+      marginBottom: 22,
+    },
+    icon: {
+      fontSize: 30,
     },
 
-    col: {
+    // CARD CONTENT
+    cardContent: {
       flex: 1,
-      marginHorizontal: 5,
+    },
+    cardHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: 12,
+    },
+    cardTitle: {
+      flex: 1,
+      color: '#0F172A',
+      fontSize: 21,
+      fontWeight: '800',
+    },
+    statusBadge: {
+      paddingHorizontal: 9,
+      paddingVertical: 5,
+      borderRadius: 7,
+      backgroundColor: '#F0F9FF',
+      borderWidth: 1,
+      borderColor: '#BAE6FD',
+    },
+    statusText: {
+      color: '#0284C7',
+      fontSize: 11,
+      fontWeight: '900',
+    },
+    cardDescription: {
+      color: '#64748B',
+      fontSize: 14,
+      lineHeight: 22,
+      marginTop: 12,
+      maxWidth: 550,
     },
 
-    image: {
-      width: 200,
-      height: 200,
-      alignSelf: 'center',
-      marginBottom: 20,
+    // CARD FOOTER
+    cardFooter: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: 24,
+    },
+    cardAction: {
+      color: '#0284C7',
+      fontSize: 14,
+      fontWeight: '800',
+    },
+    arrow: {
+      color: '#0284C7',
+      fontSize: 20,
+      marginLeft: 8,
     },
 
-    title: {
-      fontSize: 24,
+    // COMING SOON
+    comingSoonCard: {
+      flex: 1,
+      minHeight: 240,
+      borderRadius: 20,
+      padding: 26,
+      borderWidth: 1,
+      borderStyle: 'dashed',
+      borderColor: '#CBD5E1',
+      backgroundColor: '#F8FAFC',
+      justifyContent: 'center',
+    },
+    comingSoonIcon: {
+      width: 48,
+      height: 48,
+      borderRadius: 14,
+      backgroundColor: '#E2E8F0',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 18,
+    },
+    comingSoonIconText: {
+      color: '#64748B',
+      fontSize: 28,
+      fontWeight: '300',
+    },
+    comingSoonTitle: {
+      color: '#334155',
+      fontSize: 18,
+      fontWeight: '800',
+    },
+    comingSoonText: {
+      color: '#64748B',
+      fontSize: 14,
+      lineHeight: 21,
+      marginTop: 8,
+      maxWidth: 400,
+    },
+
+    // FINAL
+    finalSection: {
+      backgroundColor: '#0F172A',
+      paddingVertical: 80,
+      paddingHorizontal: 24,
+      alignItems: 'center',
+    },
+    finalEyebrow: {
+      color: '#38BDF8',
+      fontSize: 13,
+      fontWeight: '900',
+      letterSpacing: 2,
+    },
+    finalTitle: {
+      color: '#FFFFFF',
+      fontSize: 38,
+      fontWeight: '900',
+      textAlign: 'center',
+      marginTop: 12,
+    },
+    finalText: {
+      color: '#94A3B8',
+      fontSize: 16,
+      lineHeight: 26,
+      textAlign: 'center',
+      maxWidth: 750,
+      marginTop: 20,
+    },
+    finalFlow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: 12,
+      marginTop: 36,
+    },
+    finalFlowText: {
+      color: '#FFFFFF',
       fontWeight: '700',
-      textAlign: 'center',
-      marginBottom: 8,
-      color: '#1F2937',
     },
-
-    subtitle: {
-      textAlign: 'center',
-      color: '#6B7280',
+    finalArrow: {
+      color: '#38BDF8',
+      fontSize: 20,
     },
-
-    email: {
-      textAlign: 'center',
-      fontWeight: '600',
-      marginBottom: 10,
-      color: '#1F2937',
-    },
-
-    text: {
-      alignSelf: 'center',
-      color: '#374151',
-    },
-
-    signupLink: {
-      textAlign: 'center',
-      marginTop: 10,
-      fontWeight: '600',
-      color: '#2563EB',
-    },
-
   }),
 
-  // ===========================================================
-  // DARK THEME
-  // ===========================================================
   dark: StyleSheet.create({
-
-    socialDivider: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      width: '100%',
-      marginVertical: 24,
-    },
-
-    dividerLine: {
-      flex: 1,
-      height: 1,
-      backgroundColor: '#374151',
-    },
-
-    dividerText: {
-      marginHorizontal: 12,
-      fontSize: 13,
-      color: '#9CA3AF',
-      textAlign: 'center',
-    },
-
+    // CONTAINER
     container: {
       flex: 1,
-      width: '100%',
-      padding: 20,
-      gap: 12,
-      justifyContent: 'center',
-      backgroundColor: '#111827',
+      backgroundColor: '#0B1120',
+    },
+    contentContainer: {
+      paddingBottom: 0,
     },
 
-    containerLarge: {
+    // HERO
+    hero: {
+      backgroundColor: '#020617',
+      paddingHorizontal: 24,
+      paddingVertical: 80,
+      paddingTop: 120,
+    },
+    heroContent: {
       width: '100%',
-      maxWidth: 700,
+      maxWidth: 1100,
       alignSelf: 'center',
     },
+    badge: {
+      color: '#38BDF8',
+      fontSize: 13,
+      fontWeight: '700',
+      letterSpacing: 1,
+      marginBottom: 20,
+      textTransform: 'uppercase',
+    },
+    heroTitle: {
+      color: '#F8FAFC',
+      fontSize: 58,
+      fontWeight: '900',
+      marginBottom: 16,
+    },
+    heroSubtitle: {
+      color: '#E2E8F0',
+      fontSize: 28,
+      lineHeight: 38,
+      fontWeight: '600',
+      maxWidth: 800,
+    },
+    heroDescription: {
+      color: '#94A3B8',
+      fontSize: 17,
+      lineHeight: 28,
+      marginTop: 24,
+      maxWidth: 760,
+    },
 
-    columns: {
+    // APPLICATIONS
+    applicationsSection: {
+      width: '100%',
+      maxWidth: 1100,
+      alignSelf: 'center',
+      paddingHorizontal: 24,
+      paddingTop: 80,
+      paddingBottom: 80,
+    },
+
+    // HEADER
+    header: {
+      width: '100%',
+      marginBottom: 40,
+    },
+    eyebrow: {
+      color: '#38BDF8',
+      fontSize: 13,
+      fontWeight: '900',
+      letterSpacing: 1.5,
+      marginBottom: 8,
+    },
+    sectionTitle: {
+      color: '#F1F5F9',
+      fontSize: 38,
+      fontWeight: '900',
+    },
+    subtitle: {
+      color: '#94A3B8',
+      fontSize: 16,
+      lineHeight: 25,
+      marginTop: 10,
+      maxWidth: 650,
+    },
+
+    // CARDS
+    cardsContainer: {
+      width: '100%',
+      gap: 18,
+    },
+    cardsContainerDesktop: {
       flexDirection: 'row',
+      alignItems: 'stretch',
+    },
+
+    // INDUSTRIAL CARD
+    card: {
+      flex: 1,
+      minHeight: 240,
+      backgroundColor: '#111827',
+      borderRadius: 20,
+      padding: 26,
+      borderWidth: 1,
+      borderColor: '#334155',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.25,
+      shadowRadius: 10,
+      elevation: 2,
+    },
+    cardPressed: {
+      transform: [{ scale: 0.98 }],
+      opacity: 0.85,
+    },
+
+    // ÍCONE
+    iconContainer: {
+      width: 58,
+      height: 58,
+      borderRadius: 16,
+      backgroundColor: '#172554',
       alignItems: 'center',
       justifyContent: 'center',
-      marginVertical: 10,
+      marginBottom: 22,
+    },
+    icon: {
+      fontSize: 30,
     },
 
-    col: {
+    // CARD CONTENT
+    cardContent: {
       flex: 1,
-      marginHorizontal: 5,
+    },
+    cardHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: 12,
+    },
+    cardTitle: {
+      flex: 1,
+      color: '#F1F5F9',
+      fontSize: 21,
+      fontWeight: '800',
+    },
+    statusBadge: {
+      paddingHorizontal: 9,
+      paddingVertical: 5,
+      borderRadius: 7,
+      backgroundColor: '#082F49',
+      borderWidth: 1,
+      borderColor: '#075985',
+    },
+    statusText: {
+      color: '#7DD3FC',
+      fontSize: 11,
+      fontWeight: '900',
+    },
+    cardDescription: {
+      color: '#94A3B8',
+      fontSize: 14,
+      lineHeight: 22,
+      marginTop: 12,
+      maxWidth: 550,
     },
 
-    image: {
-      width: 200,
-      height: 200,
-      alignSelf: 'center',
-      marginBottom: 20,
+    // CARD FOOTER
+    cardFooter: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: 24,
+    },
+    cardAction: {
+      color: '#38BDF8',
+      fontSize: 14,
+      fontWeight: '800',
+    },
+    arrow: {
+      color: '#38BDF8',
+      fontSize: 20,
+      marginLeft: 8,
     },
 
-    title: {
-      fontSize: 24,
+    // COMING SOON
+    comingSoonCard: {
+      flex: 1,
+      minHeight: 240,
+      borderRadius: 20,
+      padding: 26,
+      borderWidth: 1,
+      borderStyle: 'dashed',
+      borderColor: '#475569',
+      backgroundColor: '#0F172A',
+      justifyContent: 'center',
+    },
+    comingSoonIcon: {
+      width: 48,
+      height: 48,
+      borderRadius: 14,
+      backgroundColor: '#1E293B',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 18,
+    },
+    comingSoonIconText: {
+      color: '#94A3B8',
+      fontSize: 28,
+      fontWeight: '300',
+    },
+    comingSoonTitle: {
+      color: '#E2E8F0',
+      fontSize: 18,
+      fontWeight: '800',
+    },
+    comingSoonText: {
+      color: '#94A3B8',
+      fontSize: 14,
+      lineHeight: 21,
+      marginTop: 8,
+      maxWidth: 400,
+    },
+
+    // FINAL
+    finalSection: {
+      backgroundColor: '#020617',
+      paddingVertical: 80,
+      paddingHorizontal: 24,
+      alignItems: 'center',
+      borderTopWidth: 1,
+      borderTopColor: '#1E293B',
+    },
+    finalEyebrow: {
+      color: '#38BDF8',
+      fontSize: 13,
+      fontWeight: '900',
+      letterSpacing: 2,
+    },
+    finalTitle: {
+      color: '#F8FAFC',
+      fontSize: 38,
+      fontWeight: '900',
+      textAlign: 'center',
+      marginTop: 12,
+    },
+    finalText: {
+      color: '#94A3B8',
+      fontSize: 16,
+      lineHeight: 26,
+      textAlign: 'center',
+      maxWidth: 750,
+      marginTop: 20,
+    },
+    finalFlow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: 12,
+      marginTop: 36,
+    },
+    finalFlowText: {
+      color: '#F8FAFC',
       fontWeight: '700',
-      textAlign: 'center',
-      marginBottom: 8,
-      color: '#F9FAFB',
     },
-
-    subtitle: {
-      textAlign: 'center',
-      color: '#9CA3AF',
+    finalArrow: {
+      color: '#38BDF8',
+      fontSize: 20,
     },
-
-    email: {
-      textAlign: 'center',
-      fontWeight: '600',
-      marginBottom: 10,
-      color: '#F9FAFB',
-    },
-
-    text: {
-      alignSelf: 'center',
-      color: '#E5E7EB',
-    },
-
-    signupLink: {
-      textAlign: 'center',
-      marginTop: 10,
-      fontWeight: '600',
-      color: '#60A5FA',
-    },
-
   }),
 };
